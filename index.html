@@ -209,7 +209,7 @@
         a { word-break: break-all; color: #0f3460; }
         strong { color: #1a1a2e; }
     </style>
-<base target="_blank">
+
 </head>
 <body>
 <div class="content-wrapper">
@@ -229,34 +229,39 @@
         <h2 class="toc-title">Table of Contents</h2>
         <ul class="toc">
             <li class="toc-section"><a href="#sec1">1. Image Compression</a></li>
-            <li class="toc-subsection"><a href="#sec1-1">1.1 Fidelity Criterion</a></li>
-            <li class="toc-subsection"><a href="#sec1-2">1.2 Quantization Error</a></li>
-            <li class="toc-subsection"><a href="#sec1-3">1.3 JPEG Compression Method</a></li>
-            <li class="toc-section"><a href="#sec2">2. Image Segmentation</a></li>
-            <li class="toc-subsection"><a href="#sec2-1">2.1 K-Means Clustering</a></li>
-            <li class="toc-subsection"><a href="#sec2-2">2.2 Hough Transform</a></li>
+            <li class="toc-subsection"><a href="#sec1-1">Q: What is the fidelity criterion? What are the categories, and how are they achieved in image compression?</a></li>
+            <li class="toc-subsection"><a href="#sec1-2">Q: How do you calculate the quantization error for an image? Provide the formula and its significance.</a></li>
+            <li class="toc-subsection"><a href="#sec1-3">Q: Which compression method is employed by JPEG? Provide the sequential steps of JPEG encoding and decoding.</a></li>
+            <li class="toc-section"><a href="#sec2">2. Image Segmentation &amp; Pattern Recognition</a></li>
+            <li class="toc-subsection"><a href="#sec2-1">Q: What are the applications of K-Means Clustering Algorithm in Image Segmentation?</a></li>
+            <li class="toc-subsection"><a href="#sec2-2">Q: How does the Hough Transform help in detecting lines and shapes?</a></li>
+            <li class="toc-subsection"><a href="#sec8-1">Q: Explain Region-Based Segmentation and Morphological Watershed Algorithm.</a></li>
+            <li class="toc-subsection"><a href="#sec8-2">Q: Compare Statistical vs. Structural Methods for Pattern Recognition.</a></li>
+            <li class="toc-subsection"><a href="#sec8-3">Q: Explain Visual Servoing and ARMAR-III Task Planning with 6D Pose Estimation.</a></li>
             <li class="toc-section"><a href="#sec3">3. Noise Models and Filtering</a></li>
-            <li class="toc-subsection"><a href="#sec3-1">3.1 Noise Stages and Models</a></li>
-            <li class="toc-subsection"><a href="#sec3-2">3.2 Impulse Noise and Restoration</a></li>
-            <li class="toc-subsection"><a href="#sec3-3">3.3 Wiener Filter</a></li>
+            <li class="toc-subsection"><a href="#sec3-1">Q: What are the stages where noise is added? Explain Speckle and Gaussian noise models.</a></li>
+            <li class="toc-subsection"><a href="#sec3-2">Q: What is Impulse Noise? What is the suitable restoration method?</a></li>
+            <li class="toc-subsection"><a href="#sec3-3">Q: Explain the Wiener Filter for Gaussian Noise Restoration.</a></li>
             <li class="toc-section"><a href="#sec4">4. Image Transformations</a></li>
-            <li class="toc-subsection"><a href="#sec4-1">4.1 Gamma Correction</a></li>
-            <li class="toc-subsection"><a href="#sec4-2">4.2 Alpha Blending</a></li>
-            <li class="toc-subsection"><a href="#sec4-3">4.3 Power-Law Transformation</a></li>
-            <li class="toc-section"><a href="#sec5">5. Edge Detection</a></li>
-            <li class="toc-subsection"><a href="#sec5-1">5.1 Canny Edge Detector</a></li>
-            <li class="toc-subsection"><a href="#sec5-2">5.2 Kirsch Compass Masks</a></li>
-            <li class="toc-subsection"><a href="#sec5-3">5.3 Corner Detection</a></li>
+            <li class="toc-subsection"><a href="#sec4-1">Q: Explain Gamma Correction and its application. Prove that the inverse of a gamma function is another gamma function.</a></li>
+            <li class="toc-subsection"><a href="#sec4-2">Q: Explain Alpha Blending and its application.</a></li>
+            <li class="toc-subsection"><a href="#sec4-3">Q: Explain the Power-Law Transformation effects for different gamma values (&gamma; = 2.5, 4.0, 0.5).</a></li>
+            <li class="toc-section"><a href="#sec5">5. Edge Detection, Sharpening &amp; Image Properties</a></li>
+            <li class="toc-subsection"><a href="#sec5-1">Q: Why is Canny considered the optimal edge detector? Explain the steps involved.</a></li>
+            <li class="toc-subsection"><a href="#sec5-2">Q: Explain Kirsch Compass Masks and how to determine Edge Magnitude.</a></li>
+            <li class="toc-subsection"><a href="#sec5-3">Q: Explain the key idea underlying Corner Detection. What does it mean if the largest eigenvalue is much bigger than the second one?</a></li>
+            <li class="toc-subsection"><a href="#sec9-1">Q: How many primary types of redundancies are there in an image and what are they?</a></li>
+            <li class="toc-subsection"><a href="#sec9-2">Q: What does the HSI color model stand for and what does it represent? Explain hue and saturation.</a></li>
+            <li class="toc-subsection"><a href="#sec9-3">Q: Two images have identical histograms. After applying a 3x3 averaging mask, will the resultant histograms be the same?</a></li>
+            <li class="toc-subsection"><a href="#sec9-4">Q: Is Median filtering superior to Averaging for Salt-and-Pepper noise?</a></li>
+            <li class="toc-subsection"><a href="#sec9-5">Q: Write a Python program to add Salt and Pepper noise and remove it using a Median Filter.</a></li>
+            <li class="toc-subsection"><a href="#sec9-6">Q: Explain Laplacian Sharpening, Unsharp Masking, and High-Boost Filtering.</a></li>
             <li class="toc-section"><a href="#sec6">6. Histogram Processing</a></li>
-            <li class="toc-subsection"><a href="#sec6-1">6.1 Histogram Specification</a></li>
-            <li class="toc-subsection"><a href="#sec6-2">6.2 Bit Plane Decomposition</a></li>
+            <li class="toc-subsection"><a href="#sec6-1">Q: Explain Histogram Specification vs. Histogram Equalization, and handling non-invertible reference distributions.</a></li>
+            <li class="toc-subsection"><a href="#sec6-2">Q: Explain the usefulness of Bit Plane Decomposition and find the bit planes for a given 3-bit image.</a></li>
             <li class="toc-section"><a href="#sec7">7. Frequency Domain Filtering</a></li>
-            <li class="toc-subsection"><a href="#sec7-1">7.1 Basic Steps</a></li>
-            <li class="toc-subsection"><a href="#sec7-2">7.2 Butterworth Filters</a></li>
-            <li class="toc-section"><a href="#sec8">8. Advanced Topics</a></li>
-            <li class="toc-subsection"><a href="#sec8-1">8.1 Watershed Segmentation</a></li>
-            <li class="toc-subsection"><a href="#sec8-2">8.2 Pattern Recognition</a></li>
-            <li class="toc-subsection"><a href="#sec8-3">8.3 Robot Vision</a></li>
+            <li class="toc-subsection"><a href="#sec7-1">Q: Explain the basic steps of Frequency Domain Filtering and calculate Phase and Spectrum.</a></li>
+            <li class="toc-subsection"><a href="#sec7-2">Q: Explain Butterworth Low-Pass and High-Pass Filters.</a></li>
         </ul>
     </div>
 
@@ -954,7 +959,7 @@
     </div>
 
 
-    <h1 id="sec8" class="section-break">8. Advanced Topics</h1>
+    <h1 id="sec8" class="section-break">8. Region-Based Segmentation &amp; Pattern Recognition</h1>
     
     <h2 id="sec8-1">8.1 Watershed Segmentation</h2>
     <div class="question-block">
@@ -1152,9 +1157,9 @@
         </div>
     </div>
 
-    <h1 class="section-break">9. Additional Topics</h1>
+    <h1 id="sec9" class="section-break">9. Image Redundancy, Color Models &amp; Sharpening</h1>
     
-    <h2>9.1 Categories of Image Redundancy</h2>
+    <h2 id="sec9-1">9.1 Categories of Image Redundancy</h2>
     <div class="question-block">
         <div class="question">Question: How many primary types of redundancies are there in an image and what are they?</div>
         <div class="answer">
@@ -1215,7 +1220,7 @@
         </div>
     </div>
 
-    <h2>9.2 HSI Color Model</h2>
+    <h2 id="sec9-2">9.2 HSI Color Model</h2>
     <div class="question-block">
         <div class="question">Question: What does the HSI color model stand for and what does it represent? Explain hue and saturation.</div>
         <div class="answer">
@@ -1256,7 +1261,7 @@
         </div>
     </div>
 
-    <h2>9.3 Histograms After Blurring</h2>
+    <h2 id="sec9-3">9.3 Histograms After Blurring</h2>
     <div class="question-block">
         <div class="question">Question: Two images have identical histograms. After applying a 3x3 averaging mask, will the resultant histograms be the same?</div>
         <div class="answer">
@@ -1281,7 +1286,7 @@
         </div>
     </div>
 
-    <h2>9.4 Median vs. Averaging for Salt-and-Pepper Noise</h2>
+    <h2 id="sec9-4">9.4 Median vs. Averaging for Salt-and-Pepper Noise</h2>
     <div class="question-block">
         <div class="question">Question: Is Median filtering superior to Averaging for Salt-and-Pepper noise?</div>
         <div class="answer">
@@ -1299,7 +1304,7 @@
         </div>
     </div>
 
-    <h2>9.5 Python Program for Noise Addition and Denoising</h2>
+    <h2 id="sec9-5">9.5 Python Program for Noise Addition and Denoising</h2>
     <div class="question-block">
         <div class="question">Question: Write a Python program to add Salt and Pepper noise and remove it using a Median Filter.</div>
         <div class="answer">
@@ -1353,7 +1358,7 @@ plt.show()</pre>
         </div>
     </div>
 
-    <h2>9.6 Laplacian Sharpening and Unsharp Masking</h2>
+    <h2 id="sec9-6">9.6 Laplacian Sharpening and Unsharp Masking</h2>
     <div class="question-block">
         <div class="question">Question: Explain Laplacian Sharpening, Unsharp Masking, and High-Boost Filtering.</div>
         <div class="answer">
