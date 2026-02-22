@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Image Processing - Complete Study Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Merriweather', Georgia, serif;
+            font-size: 11pt;
+            line-height: 1.8;
+            color: #2d2d2d;
+            background: #f7f7f5;
+            text-align: justify;
+            text-align-last: left;
+            string-set: doctitle "";
+        }
+
+        /* ── Page / Print Rules ─────────────────────────── */
+        @page { size: A4; margin: 2.5cm 2cm; @top-center { content: string(doctitle); font-size: 9pt; color: #666; } @bottom-center { content: counter(page); font-size: 9pt; } }
+        @page :first { margin: 0; @top-center { content: none; } @bottom-center { content: none; } }
+        h1 { string-set: doctitle content(); }
+
+        /* ── Layout Wrapper ─────────────────────────────── */
+        .content-wrapper {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 2.5rem 3rem;
+            background: #ffffff;
+            min-height: 100vh;
+            box-shadow: 0 0 40px rgba(0,0,0,0.07);
+        }
+
+        /* ── Cover Page ─────────────────────────────────── */
+        .cover {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            page-break-after: always;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cover-content { text-align: center; width: 80%; color: white; }
+        .cover-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 32pt;
+            font-weight: 700;
+            margin-bottom: 0.5cm;
+            letter-spacing: -0.5px;
+        }
+        .cover-subtitle {
+            font-family: 'Merriweather', serif;
+            font-size: 15pt;
+            margin-bottom: 3cm;
+            opacity: 0.88;
+            font-style: italic;
+        }
+        .cover-meta {
+            font-family: 'Inter', sans-serif;
+            font-size: 11pt;
+            line-height: 2.2;
+            opacity: 0.75;
+        }
+
+        /* ── Table of Contents ──────────────────────────── */
+        .toc-page { page-break-after: always; }
+        .toc-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 22pt;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1.5cm;
+            color: #1a1a2e;
+            letter-spacing: -0.3px;
+        }
+        .toc { list-style: none; padding: 0; }
+        .toc li { margin: 0.45em 0; font-size: 10.5pt; }
+        .toc a {
+            color: #2d2d2d;
+            text-decoration: none;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px dotted #ccc;
+            padding-bottom: 2px;
+            transition: color 0.2s;
+        }
+        .toc a:hover { color: #0f3460; }
+        .toc a::after { content: leader('.') target-counter(attr(href url), page); }
+        .toc .toc-section {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            margin-top: 1em;
+            color: #1a1a2e;
+        }
+        .toc .toc-subsection { padding-left: 1.8em; color: #555; }
+
+        /* ── Headings ───────────────────────────────────── */
+        h1 {
+            font-family: 'Inter', sans-serif;
+            font-size: 19pt;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin: 2em 0 0.7em 0;
+            padding-bottom: 0.4em;
+            border-bottom: 3px solid #0f3460;
+            page-break-after: avoid;
+            letter-spacing: -0.3px;
+        }
+        h2 {
+            font-family: 'Inter', sans-serif;
+            font-size: 13pt;
+            font-weight: 600;
+            color: #16213e;
+            margin: 1.6em 0 0.6em 0;
+            page-break-after: avoid;
+            padding-left: 0.7em;
+            border-left: 3px solid #537ec5;
+        }
+
+        /* ── Question/Answer Blocks ─────────────────────── */
+        .question-block {
+            margin: 1.6em 0;
+            page-break-inside: avoid;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .question {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 10.5pt;
+            color: #fff;
+            margin-bottom: 0;
+            padding: 0.65em 1em;
+            background: linear-gradient(90deg, #1a1a2e 0%, #0f3460 100%);
+            border-radius: 4px 4px 0 0;
+        }
+        .answer {
+            padding: 1em 1.2em;
+            background: #fafafa;
+            border: 1px solid #e4e4e4;
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+        }
+
+        /* ── Math ───────────────────────────────────────── */
+        .katex-display { margin: 1em 0; overflow-x: auto; }
+
+        /* ── Tables ─────────────────────────────────────── */
+        table {
+            width: 100%;
+            max-width: 100%;
+            border-collapse: collapse;
+            margin: 1.2em 0;
+            font-size: 10pt;
+            font-family: 'Inter', sans-serif;
+        }
+        th, td { padding: 0.6em 0.75em; text-align: left; border-bottom: 1px solid #e0e0e0; }
+        th {
+            background: #1a1a2e;
+            color: #fff;
+            font-weight: 600;
+            font-size: 9.5pt;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        tbody tr:nth-child(even) { background: #f4f6fb; }
+        tbody tr:last-child td { border-bottom: 2px solid #c0c8d8; }
+        tr { page-break-inside: avoid; }
+
+        /* ── Code Blocks ────────────────────────────────── */
+        pre {
+            background: #1e1e2e;
+            color: #cdd6f4;
+            padding: 1.2em 1.4em;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 9pt;
+            line-height: 1.65;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-width: 100%;
+            margin: 1.2em 0;
+            border-left: 3px solid #537ec5;
+        }
+
+        /* ── Lists ──────────────────────────────────────── */
+        ul, ol { margin: 0.5em 0; padding-left: 1.8em; }
+        li { margin: 0.35em 0; }
+
+        /* ── Misc ───────────────────────────────────────── */
+        p { margin: 0.6em 0; }
+        .section-break { page-break-before: always; }
+        pre, table, figure, img, svg, blockquote { max-width: 100%; box-sizing: border-box; }
+        a { word-break: break-all; color: #0f3460; }
+        strong { color: #1a1a2e; }
+    </style>
+<base target="_blank">
+</head>
+<body>
+<div class="content-wrapper">
+    <div class="cover">
+        <div class="cover-content">
+            <h1 class="cover-title">Digital Image Processing</h1>
+            <p class="cover-subtitle">Complete Study Notes with Questions and Answers</p>
+            <div class="cover-meta">
+                <p>Course: RME 4102</p>
+                <p>Digital Image Processing and Robot Vision</p>
+                <p>Comprehensive Exam Preparation Guide</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="toc-page">
+        <h2 class="toc-title">Table of Contents</h2>
+        <ul class="toc">
+            <li class="toc-section"><a href="#sec1">1. Image Compression</a></li>
+            <li class="toc-subsection"><a href="#sec1-1">1.1 Fidelity Criterion</a></li>
+            <li class="toc-subsection"><a href="#sec1-2">1.2 Quantization Error</a></li>
+            <li class="toc-subsection"><a href="#sec1-3">1.3 JPEG Compression Method</a></li>
+            <li class="toc-section"><a href="#sec2">2. Image Segmentation</a></li>
+            <li class="toc-subsection"><a href="#sec2-1">2.1 K-Means Clustering</a></li>
+            <li class="toc-subsection"><a href="#sec2-2">2.2 Hough Transform</a></li>
+            <li class="toc-section"><a href="#sec3">3. Noise Models and Filtering</a></li>
+            <li class="toc-subsection"><a href="#sec3-1">3.1 Noise Stages and Models</a></li>
+            <li class="toc-subsection"><a href="#sec3-2">3.2 Impulse Noise and Restoration</a></li>
+            <li class="toc-subsection"><a href="#sec3-3">3.3 Wiener Filter</a></li>
+            <li class="toc-section"><a href="#sec4">4. Image Transformations</a></li>
+            <li class="toc-subsection"><a href="#sec4-1">4.1 Gamma Correction</a></li>
+            <li class="toc-subsection"><a href="#sec4-2">4.2 Alpha Blending</a></li>
+            <li class="toc-subsection"><a href="#sec4-3">4.3 Power-Law Transformation</a></li>
+            <li class="toc-section"><a href="#sec5">5. Edge Detection</a></li>
+            <li class="toc-subsection"><a href="#sec5-1">5.1 Canny Edge Detector</a></li>
+            <li class="toc-subsection"><a href="#sec5-2">5.2 Kirsch Compass Masks</a></li>
+            <li class="toc-subsection"><a href="#sec5-3">5.3 Corner Detection</a></li>
+            <li class="toc-section"><a href="#sec6">6. Histogram Processing</a></li>
+            <li class="toc-subsection"><a href="#sec6-1">6.1 Histogram Specification</a></li>
+            <li class="toc-subsection"><a href="#sec6-2">6.2 Bit Plane Decomposition</a></li>
+            <li class="toc-section"><a href="#sec7">7. Frequency Domain Filtering</a></li>
+            <li class="toc-subsection"><a href="#sec7-1">7.1 Basic Steps</a></li>
+            <li class="toc-subsection"><a href="#sec7-2">7.2 Butterworth Filters</a></li>
+            <li class="toc-section"><a href="#sec8">8. Advanced Topics</a></li>
+            <li class="toc-subsection"><a href="#sec8-1">8.1 Watershed Segmentation</a></li>
+            <li class="toc-subsection"><a href="#sec8-2">8.2 Pattern Recognition</a></li>
+            <li class="toc-subsection"><a href="#sec8-3">8.3 Robot Vision</a></li>
+        </ul>
+    </div>
+
+    <h1 id="sec1">1. Image Compression</h1>
+    
+    <h2 id="sec1-1">1.1 Fidelity Criterion</h2>
+    <div class="question-block">
+        <div class="question">Question: What is the fidelity criterion? What are the categories, and how are they achieved in image compression?</div>
+        <div class="answer">
+            <p><strong>Fidelity Criterion</strong> refers to the measure of how close the decompressed (reconstructed) image is to the original image. It determines the quality of the compressed image.</p>
+            <p><strong>Categories of Fidelity Criteria:</strong></p>
+            <p>There are two main categories (<em>Image Compression_MMH.pdf</em>, Slide 33):</p>
+            <p><strong>1. Subjective Fidelity Criteria:</strong></p>
+            <ul>
+                <li><strong>Definition:</strong> Based on human observers rating the quality of the image.</li>
+                <li><strong>Achievement:</strong> Achieved by displaying the image to humans and asking them to rate it (e.g., "Excellent," "Good," "Poor"). This is often used when the end-user is a human.</li>
+            </ul>
+            <p><strong>2. Objective Fidelity Criteria:</strong></p>
+            <ul>
+                <li><strong>Definition:</strong> Based on mathematically defined functions that calculate the error between the original image $f(x,y)$ and the reconstructed image $\hat{f}(x,y)$.</li>
+                <li><strong>Achievement:</strong> Achieved by calculating metrics like <strong>Root Mean Square Error (RMSE)</strong> or <strong>Signal-to-Noise Ratio (SNR)</strong>.</li>
+            </ul>
+            <p><strong>How they are achieved in compression:</strong></p>
+            <p>Fidelity is achieved by balancing the <strong>Compression Ratio</strong> with the <strong>Error</strong>.</p>
+            <ul>
+                <li>In <strong>Lossless Compression</strong>, fidelity is perfect (Error = 0).</li>
+                <li>In <strong>Lossy Compression</strong>, fidelity is managed by adjusting the <strong>Quantization</strong> step. Coarser quantization leads to higher compression but lower fidelity (higher error).</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 id="sec1-2">1.2 Quantization Error</h2>
+    <div class="question-block">
+        <div class="question">Question: If a pixel value in an image is quantized using a quantization table Q and the quantized value differs from the original value by an error term E, how do you calculate the quantization error for an image? Provide the formula and the significance of the error in the context of compression.</div>
+        <div class="answer">
+            <p><strong>Calculation of Quantization Error:</strong></p>
+            <p>While the error for a single pixel is simply $E = f(x,y) - \hat{f}(x,y)$, the error for the <strong>entire image</strong> is typically calculated using the <strong>Root Mean Square Error (RMSE)</strong>.</p>
+            <p><strong>Formula (<em>Image Compression_MMH.pdf</em>, Slide 34):</strong></p>
+            $$\text{RMSE} = \sqrt{\frac{1}{MN} \sum_{x=0}^{M-1} \sum_{y=0}^{N-1} [f(x,y) - \hat{f}(x,y)]^2}$$
+            <p>Where:</p>
+            <ul>
+                <li>$f(x,y)$: Original pixel value.</li>
+                <li>$\hat{f}(x,y)$: Reconstructed (quantized) pixel value.</li>
+                <li>$M \times N$: Size of the image.</li>
+            </ul>
+            <p><strong>Significance in Compression:</strong></p>
+            <ul>
+                <li><strong>Quality Measure:</strong> RMSE provides an objective measure of information loss. A lower RMSE indicates higher image quality (better fidelity).</li>
+                <li><strong>Lossy Nature:</strong> Quantization is the primary source of error in lossy compression (like JPEG). By increasing the values in the Quantization Table $Q$, we increase the error ($E$), which allows for higher compression ratios but reduces image fidelity.</li>
+                <li><strong>Trade-off:</strong> It helps engineers decide the acceptable trade-off between file size and image quality.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 id="sec1-3">1.3 JPEG Compression Method</h2>
+    <div class="question-block">
+        <div class="question">Question: Which compression method is employed by JPEG for image compression? Provide a visual representation of the sequential steps involved in the JPEG encoding and decoding processes.</div>
+        <div class="answer">
+            <p><strong>Compression Method:</strong></p>
+            <p>JPEG employs <strong>Lossy Compression</strong> based on the <strong>Discrete Cosine Transform (DCT)</strong>. Specifically, it uses <strong>Sequential DCT-based encoding</strong>.</p>
+            <p><strong>JPEG Encoding Steps:</strong></p>
+            <p><strong>1. Color Space Conversion:</strong></p>
+            <ul>
+                <li>Convert the image from <strong>RGB</strong> to <strong>YCbCr</strong>.</li>
+                <li><strong>Y</strong> represents Luminance (Brightness), <strong>Cb</strong> and <strong>Cr</strong> represent Chrominance (Color).</li>
+                <li><em>Reason:</em> The human eye is more sensitive to brightness than color, allowing us to compress color data more aggressively.</li>
+            </ul>
+            <p><strong>2. Block Splitting:</strong></p>
+            <ul>
+                <li>Divide the image into non-overlapping blocks of size <strong>$8 \times 8$</strong>.</li>
+                <li>Shift pixel values to be centered around zero (subtract 128 from each pixel).</li>
+            </ul>
+            <p><strong>3. DCT (Discrete Cosine Transform):</strong></p>
+            <ul>
+                <li>Apply DCT to each $8 \times 8$ block.</li>
+                <li>This converts spatial data into <strong>frequency coefficients</strong>.</li>
+                <li><strong>Result:</strong> Most of the image energy is concentrated in the <strong>DC Coefficient</strong> (top-left, low frequency), while high-frequency details are in the bottom-right.</li>
+            </ul>
+            <p><strong>4. Quantization (The Lossy Step):</strong></p>
+            <ul>
+                <li>Divide each DCT coefficient by a corresponding value in the <strong>Quantization Table (Q)</strong> and round to the nearest integer.</li>
+                <li><strong>Formula:</strong> $F_Q(u,v) = \text{round}\left( \frac{F(u,v)}{Q(u,v)} \right)$</li>
+                <li><strong>Effect:</strong> High-frequency coefficients (which the eye notices less) are often reduced to <strong>0</strong>. This creates the compression.</li>
+            </ul>
+            <p><strong>5. Zig-Zag Scan:</strong></p>
+            <ul>
+                <li>Reorder the $8 \times 8$ quantized coefficients into a 1D vector.</li>
+                <li><strong>Pattern:</strong> Starts at DC (top-left) and moves diagonally to AC (bottom-right).</li>
+                <li><strong>Purpose:</strong> Groups the non-zero coefficients at the start and creates long runs of zeros at the end.</li>
+            </ul>
+            <p><strong>6. Entropy Coding:</strong></p>
+            <ul>
+                <li><strong>DC Coefficients:</strong> Encoded using <strong>Differential PCM (DPCM)</strong> (encoding the difference from the previous block's DC value).</li>
+                <li><strong>AC Coefficients:</strong> Encoded using <strong>Run-Length Encoding (RLE)</strong> followed by <strong>Huffman Coding</strong>.</li>
+                <li><strong>End of Block (EOB):</strong> A special code indicates that all remaining coefficients are zero.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h1 id="sec2" class="section-break">2. Image Segmentation</h1>
+    
+    <h2 id="sec2-1">2.1 K-Means Clustering</h2>
+    <div class="question-block">
+        <div class="question">Question: What are the applications of K-Means Clustering Algorithm in Image Segmentation?</div>
+        <div class="answer">
+            <p><strong>Reference:</strong> <em>Lecture06.pdf</em> (Slide 78-80)</p>
+            <p><strong>Description:</strong></p>
+            <p>K-means clustering is an unsupervised learning algorithm used to partition an image into <strong>K distinct clusters</strong> based on pixel similarity (intensity, color, or texture).</p>
+            <p><strong>Applications in Segmentation:</strong></p>
+            <ol>
+                <li><strong>Color Segmentation:</strong> Grouping pixels with similar colors to separate objects from the background (e.g., separating a red apple from a green tree).</li>
+                <li><strong>Image Compression:</strong> Reducing the number of colors in an image by clustering similar colors and replacing them with the cluster centroid color.</li>
+                <li><strong>Object Detection:</strong> Identifying regions of interest by clustering pixels that belong to specific objects.</li>
+                <li><strong>Medical Imaging:</strong> Segmenting tissues (e.g., tumor vs. healthy tissue) based on intensity values in MRI or CT scans.</li>
+            </ol>
+            <p><strong>Algorithm Steps:</strong></p>
+            <ol>
+                <li><strong>Initialize:</strong> Choose $K$ random centroids.</li>
+                <li><strong>Assign:</strong> Assign each pixel to the nearest centroid based on distance (usually Euclidean).</li>
+                <li><strong>Update:</strong> Recalculate centroids as the mean of all pixels in the cluster.</li>
+                <li><strong>Repeat:</strong> Continue until centroids stop changing (convergence).</li>
+            </ol>
+        </div>
+    </div>
+
+    <h2 id="sec2-2">2.2 Hough Transform</h2>
+    <div class="question-block">
+        <div class="question">Question: How does the Hough Transform help in detecting lines and shapes?</div>
+        <div class="answer">
+            <p><strong>Reference:</strong> <em>Lec 5_Edge Detection.pdf</em> (Slide 40-41)</p>
+            <p><strong>Explanation:</strong></p>
+            <p>The Hough Transform is a feature extraction technique that detects shapes (like lines, circles) by using a <strong>voting procedure</strong> in a parameter space.</p>
+            <p><strong>Mechanism for Line Detection:</strong></p>
+            <ol>
+                <li><strong>Parameter Space:</strong> Instead of working in $(x, y)$ image space, it maps points to a parameter space $(\rho, \theta)$, where a line is represented by $\rho = x \cos \theta + y \sin \theta$.</li>
+                <li><strong>Voting:</strong> For every edge point $(x, y)$ in the image, the algorithm calculates all possible lines that could pass through it and "votes" for those parameters in an <strong>Accumulator Array</strong>.</li>
+                <li><strong>Intersection:</strong> Points that are collinear in the image space will cast votes that intersect at the <strong>same point</strong> in the parameter space.</li>
+                <li><strong>Detection:</strong> Local maxima in the accumulator array correspond to the parameters of the detected lines.</li>
+            </ol>
+            <p><strong>For Shapes:</strong></p>
+            <ul>
+                <li><strong>Circles:</strong> Uses a 3D parameter space $(a, b, r)$ for center coordinates and radius.</li>
+                <li><strong>Advantage:</strong> It is robust to gaps in the edge contour and noise.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h1 id="sec3" class="section-break">3. Noise Models and Filtering</h1>
+    
+    <h2 id="sec3-1">3.1 Noise Stages and Models</h2>
+    <div class="question-block">
+        <div class="question">Question: What are the stages where noise is added? Explain Speckle and Gaussian noise models.</div>
+        <div class="answer">
+            <p><strong>Reference:</strong> <em>Ch 4_Filtering.pdf</em> (Slide 53-57)</p>
+            <p><strong>Stages Where Noise is Added:</strong></p>
+            <ol>
+                <li><strong>Image Acquisition:</strong> Sensor noise due to lighting conditions, sensor temperature, or hardware limitations (e.g., CCD/CMOS noise).</li>
+                <li><strong>Transmission:</strong> Noise introduced during the transfer of image data over a channel (e.g., wireless interference).</li>
+                <li><strong>Processing:</strong> Quantization noise during digitization.</li>
+            </ol>
+            <p><strong>Noise Models:</strong></p>
+            <p><strong>1. Gaussian Noise:</strong></p>
+            <ul>
+                <li><strong>Type:</strong> Additive noise.</li>
+                <li><strong>Cause:</strong> Electronic circuit noise, sensor noise due to insufficient lighting.</li>
+                <li><strong>PDF:</strong> $p(z) = \frac{1}{\sqrt{2\pi}\sigma} e^{-(z-\mu)^2 / 2\sigma^2}$</li>
+                <li><strong>Appearance:</strong> Random variations in brightness across the image.</li>
+                <li><strong>Filter:</strong> Gaussian Blur or Mean Filter.</li>
+            </ul>
+            <p><strong>2. Speckle Noise:</strong></p>
+            <ul>
+                <li><strong>Type:</strong> Multiplicative noise ($g = f + n \cdot f$).</li>
+                <li><strong>Cause:</strong> Coherent imaging systems like <strong>Ultrasound</strong>, <strong>SAR (Synthetic Aperture Radar)</strong>, or Laser imaging.</li>
+                <li><strong>Appearance:</strong> Granular pattern that degrades image quality.</li>
+                <li><strong>Filter:</strong> Lee Filter, Kuan Filter, or Median Filter.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 id="sec3-2">3.2 Impulse Noise and Restoration</h2>
+    <div class="question-block">
+        <div class="question">Question: What is Impulse Noise? What is the suitable restoration method?</div>
+        <div class="answer">
+            <p><strong>What is Impulse Noise?</strong></p>
+            <ul>
+                <li><strong>Definition:</strong> Impulse noise is a type of degradation where random pixels are scattered throughout the image, appearing as bright (white) or dark (black) spots.</li>
+                <li><strong>Common Name:</strong> It is often called <strong>Salt-and-Pepper Noise</strong>.</li>
+                <li><strong>Cause:</strong> It is caused by sudden, sharp disturbances in the image signal (e.g., faulty memory locations, transmission errors, or sensor malfunctions).</li>
+                <li><strong>Appearance:</strong> In an 8-bit image, "salt" noise appears as value 255 (white), and "pepper" noise appears as value 0 (black).</li>
+            </ul>
+            <p><strong>Suitable Restoration Method: Median Filter</strong></p>
+            <ul>
+                <li><strong>Why Median Filter?</strong> Linear smoothing filters (like Mean/Average filters) are <strong>not suitable</strong> for impulse noise because they smear the noise across neighboring pixels, blurring edges while failing to fully remove the sharp noise spikes.</li>
+                <li><strong>How it Works:</strong> The Median Filter is a <strong>non-linear spatial filter</strong>.
+                    <ol>
+                        <li>It moves a window (e.g., $3 \times 3$) over the image.</li>
+                        <li>It sorts all pixel values within the window in ascending order.</li>
+                        <li>It replaces the center pixel with the <strong>median value</strong> (the middle value) of the sorted list.</li>
+                    </ol>
+                </li>
+                <li><strong>Benefit:</strong> Since impulse noise pixels are extreme outliers (very high or very low), they are pushed to the ends of the sorted list and discarded. The median value is typically a valid neighbor pixel, effectively removing the noise while <strong>preserving sharp edges</strong> better than linear filters.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 id="sec3-3">3.3 Wiener Filter</h2>
+    <div class="question-block">
+        <div class="question">Question: Explain the Wiener Filter for Gaussian Noise Restoration.</div>
+        <div class="answer">
+            <p><strong>Explanation:</strong></p>
+            <p>The Wiener Filter is a statistical approach to image restoration that minimizes the <strong>Mean Square Error (MSE)</strong> between the estimated (restored) image and the original (noise-free) image. It is particularly effective for <strong>Gaussian Noise</strong>.</p>
+            <p><strong>How it is Used:</strong></p>
+            <ol>
+                <li><strong>Frequency Domain Operation:</strong> The filter operates in the frequency domain. It requires knowledge of the <strong>Power Spectral Density (PSD)</strong> of the original image ($S_f$) and the noise ($S_\eta$).</li>
+                <li><strong>Adaptive Smoothing:</strong> Unlike inverse filtering which can amplify noise, the Wiener filter adapts to the local signal-to-noise ratio.
+                    <ul>
+                        <li><strong>High Signal-to-Noise:</strong> Where the image signal is strong, the filter passes frequencies with little attenuation (preserving details).</li>
+                        <li><strong>Low Signal-to-Noise:</strong> Where noise dominates, the filter suppresses frequencies (smoothing the noise).</li>
+                    </ul>
+                </li>
+                <li><strong>Formula:</strong> The restoration filter $H(u,v)$ is given by:
+                    $$H(u,v) = \frac{1}{G(u,v)} \left[ \frac{|G(u,v)|^2}{|G(u,v)|^2 + \frac{S_\eta(u,v)}{S_f(u,v)}} \right]$$
+                    <em>(Where $G(u,v)$ is the degradation function. If only noise is present, $G=1$.)</em>
+                </li>
+                <li><strong>Result:</strong> It produces a restored image that is a statistically optimal trade-off between inverse filtering (deblurring) and noise smoothing.</li>
+            </ol>
+        </div>
+    </div>
+
+
+
+    <h1 id="sec4" class="section-break">4. Image Transformations</h1>
+    
+    <h2 id="sec4-1">4.1 Gamma Correction</h2>
+    <div class="question-block">
+        <div class="question">Question: Explain Gamma Correction and its application.</div>
+        <div class="answer">
+            <p><strong>Gamma Correction:</strong></p>
+            <ul>
+                <li><strong>Purpose:</strong> To correct the non-linear relationship between pixel value and display intensity (e.g., CRT/LCD monitors) or to enhance contrast.</li>
+                <li><strong>Formula:</strong> $s = c \cdot r^\gamma$
+                    <ul>
+                        <li>$r$: Input intensity, $s$: Output intensity.</li>
+                        <li>$\gamma < 1$: Expands dark values (brightens the image).</li>
+                        <li>$\gamma > 1$: Compresses dark values (darkens the image).</li>
+                    </ul>
+                </li>
+                <li><strong>Application:</strong> Ensures images look consistent across different display devices.</li>
+            </ul>
+            <p><strong>Proof: Inverse of a Gamma Function is Another Gamma Function</strong></p>
+            <p><strong>Statement:</strong> If a transformation is defined by $s = c \cdot r^\gamma$, prove that the inverse transformation $r = f(s)$ is also a gamma function.</p>
+            <p><strong>Proof Steps:</strong></p>
+            <ol>
+                <li><strong>Start with the original Gamma Equation:</strong> $s = c \cdot r^\gamma$</li>
+                <li><strong>Isolate the term with $r$:</strong> $\frac{s}{c} = r^\gamma$</li>
+                <li><strong>Solve for $r$:</strong> $r = \left( \frac{s}{c} \right)^{\frac{1}{\gamma}}$</li>
+                <li><strong>Simplify the Equation:</strong> $r = \left( \frac{1}{c} \right)^{\frac{1}{\gamma}} \cdot s^{\frac{1}{\gamma}}$</li>
+                <li><strong>Define New Constants:</strong> Let $k = \left( \frac{1}{c} \right)^{\frac{1}{\gamma}}$ and $\gamma' = \frac{1}{\gamma}$.
+                    Substituting these into the equation: $\boxed{r = k \cdot s^{\gamma'}}$</li>
+            </ol>
+            <p><strong>Conclusion:</strong> The resulting equation $r = k \cdot s^{\gamma'}$ is in the same form as the original gamma function ($Output = Constant \cdot Input^{Exponent}$). The new exponent is $\gamma' = 1/\gamma$. Therefore, <strong>the inverse of a gamma function is another gamma function.</strong></p>
+        </div>
+    </div>
+
+    <h2 id="sec4-2">4.2 Alpha Blending</h2>
+    <div class="question-block">
+        <div class="question">Question: Explain Alpha Blending and its application.</div>
+        <div class="answer">
+            <p><strong>Alpha Blending:</strong></p>
+            <ul>
+                <li><strong>Purpose:</strong> Combining two images (foreground and background) to create transparency effects.</li>
+                <li><strong>Formula:</strong> $I_{out} = \alpha \cdot I_{fg} + (1 - \alpha) \cdot I_{bg}$
+                    <ul>
+                        <li>$\alpha$: Transparency factor ($0 \le \alpha \le 1$).</li>
+                        <li>If $\alpha = 1$, only foreground is visible. If $\alpha = 0$, only background is visible.</li>
+                    </ul>
+                </li>
+                <li><strong>Application:</strong> Overlays, fading effects, watermarking, and compositing.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 id="sec4-3">4.3 Power-Law Transformation</h2>
+    <div class="question-block">
+        <div class="question">Question: Explain the Power-Law Transformation effects for different gamma values ($\gamma = 2.5, 4.0, 0.5$).</div>
+        <div class="answer">
+            <p><strong>Reference:</strong> <em>Ch 3.pdf</em> (Slide 11-15)</p>
+            <p><strong>Formula:</strong> $s = c \cdot r^\gamma$</p>
+            <p><strong>Effects:</strong></p>
+            <p><strong>1. Default ($\gamma = 2.5$):</strong></p>
+            <ul>
+                <li><strong>Effect:</strong> Since $\gamma > 1$, the transformation compresses lower intensity values (shadows) and expands higher intensity values (highlights).</li>
+                <li><strong>Visual:</strong> The image appears <strong>darker</strong> overall. Details in dark regions may be lost, while bright regions are emphasized.</li>
+            </ul>
+            <p><strong>2. Change to $\gamma = 4.0$:</strong></p>
+            <ul>
+                <li><strong>Effect:</strong> This is a stronger compression of dark values compared to $\gamma = 2.5$.</li>
+                <li><strong>Visual:</strong> The image becomes <strong>significantly darker</strong>. Low input intensities map to very low output values (closer to black). Contrast in bright regions increases, but shadow details disappear.</li>
+            </ul>
+            <p><strong>3. Change to $\gamma = 0.5$:</strong></p>
+            <ul>
+                <li><strong>Effect:</strong> Since $\gamma < 1$, the transformation expands lower intensity values.</li>
+                <li><strong>Visual:</strong> The image becomes <strong>brighter</strong>. Details in the shadow regions are enhanced and become more visible. The overall contrast shifts towards the darker end of the spectrum.</li>
+            </ul>
+            <p><strong>Illustration Description:</strong></p>
+            <ul>
+                <li><strong>$\gamma = 4.0$ Curve:</strong> Concave Up (bows downward). Most of the input range [0-1] maps to the lower half of the output range [0-1].</li>
+                <li><strong>$\gamma = 0.5$ Curve:</strong> Concave Down (bows upward). The lower half of the input range maps to the upper half of the output range.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h1 id="sec5" class="section-break">5. Edge Detection</h1>
+    
+    <h2 id="sec5-1">5.1 Canny Edge Detector</h2>
+    <div class="question-block">
+        <div class="question">Question: Why is Canny considered the optimal edge detector? Explain the steps involved.</div>
+        <div class="answer">
+            <p><strong>1. Why Canny is Considered Optimal</strong></p>
+            <p>The Canny Edge Detector is designed to satisfy <strong>three specific optimality criteria</strong> (<em>Lec 5, Slide 33</em>; <em>Lecture06, Slide 14</em>):</p>
+            <ol>
+                <li><strong>Low Error Rate:</strong>
+                    <ul>
+                        <li>The detector should not miss valid edges (low false negatives) and should not detect non-edges (low false positives).</li>
+                        <li>It must respond only to true edges, not noise.</li>
+                    </ul>
+                </li>
+                <li><strong>Good Localization:</strong>
+                    <ul>
+                        <li>The detected edges should be as close as possible to the <strong>true center</strong> of the actual edges in the scene.</li>
+                        <li>Minimizes the distance between the marked point and the real edge.</li>
+                    </ul>
+                </li>
+                <li><strong>Single Response (Single Edge Point):</strong>
+                    <ul>
+                        <li>For a single true edge, the detector should return <strong>only one pixel response</strong>.</li>
+                        <li>Minimizes multiple maxima around a single edge (reduces "streaking" or thick edges).</li>
+                    </ul>
+                </li>
+            </ol>
+            <p><strong>2. Steps of the Canny Edge Detection Method</strong></p>
+            <p>The algorithm consists of <strong>five main steps</strong> (<em>Lec 5, Slides 34-35</em>; <em>Lecture06, Slides 14-19</em>):</p>
+            <p><strong>Step 1: Noise Smoothing (Gaussian Filtering)</strong></p>
+            <ul>
+                <li><strong>Action:</strong> Convolve the input image $f(x,y)$ with a <strong>Gaussian filter</strong> $G(x,y)$. $f_s(x,y) = G(x,y) * f(x,y)$</li>
+                <li><strong>Purpose:</strong> Real images contain noise. Since differentiation amplifies noise, smoothing is required first to suppress high-frequency noise while preserving edges.</li>
+                <li><strong>Parameter:</strong> The width ($\sigma$) of the Gaussian controls the scale of edges detected.</li>
+            </ul>
+            <p><strong>Step 2: Gradient Calculation (Edge Strength and Direction)</strong></p>
+            <ul>
+                <li><strong>Action:</strong> Compute the gradient magnitude $M(x,y)$ and direction $\theta(x,y)$ using operators like <strong>Sobel</strong> or <strong>Prewitt</strong>.
+                    $$M(x,y) = \sqrt{g_x^2 + g_y^2} \approx |g_x| + |g_y|$$
+                    $$\theta(x,y) = \tan^{-1}\left(\frac{g_y}{g_x}\right)$$
+                    <em>Where $g_x$ and $g_y$ are derivatives in $x$ and $y$ directions.</em>
+                </li>
+                <li><strong>Purpose:</strong> Identifies areas with high intensity change (potential edges) and the direction perpendicular to the edge.</li>
+            </ul>
+            <p><strong>Step 3: Non-Maxima Suppression (NMS)</strong></p>
+            <ul>
+                <li><strong>Action:</strong> Thin the wide ridges in the gradient magnitude image to <strong>1-pixel width</strong>.
+                    <ul>
+                        <li>For each pixel, check if its magnitude is a <strong>local maximum</strong> along the gradient direction.</li>
+                        <li>Compare the pixel with its two neighbors along the edge normal direction.</li>
+                        <li>If it is <strong>not</strong> a maximum, suppress it (set to 0).</li>
+                    </ul>
+                </li>
+                <li><strong>Purpose:</strong> Ensures <strong>Good Localization</strong> and <strong>Single Response</strong> by removing false edge pixels and leaving only the sharpest points.</li>
+            </ul>
+            <p><strong>Step 4: Double Thresholding (Hysteresis Thresholding)</strong></p>
+            <ul>
+                <li><strong>Action:</strong> Apply two thresholds to the suppressed image:
+                    <ul>
+                        <li><strong>High Threshold ($T_H$):</strong> Pixels above this are marked as <strong>Strong Edges</strong>.</li>
+                        <li><strong>Low Threshold ($T_L$):</strong> Pixels between $T_L$ and $T_H$ are marked as <strong>Weak Edges</strong>.</li>
+                        <li>Pixels below $T_L$ are suppressed.</li>
+                    </ul>
+                </li>
+                <li><strong>Purpose:</strong> Reduces streaking. Strong edges are reliable; weak edges are kept only if connected to strong edges.</li>
+            </ul>
+            <p><strong>Step 5: Edge Tracking by Hysteresis (Connectivity Analysis)</strong></p>
+            <ul>
+                <li><strong>Action:</strong> Analyze connectivity to finalize edges.
+                    <ul>
+                        <li>Keep all <strong>Strong Edge</strong> pixels.</li>
+                        <li>Keep <strong>Weak Edge</strong> pixels <strong>only if</strong> they are <strong>8-connected</strong> to a Strong Edge pixel.</li>
+                        <li>Discard isolated Weak Edge pixels (likely noise).</li>
+                    </ul>
+                </li>
+                <li><strong>Purpose:</strong> Connects broken edge segments while eliminating noise, ensuring continuous boundaries.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 id="sec5-2">5.2 Kirsch Compass Masks</h2>
+    <div class="question-block">
+        <div class="question">Question: Explain Kirsch Compass Masks and how to determine Edge Magnitude.</div>
+        <div class="answer">
+            <p><strong>Kirsch Compass Masks:</strong></p>
+            <p>The Kirsch operator uses <strong>8 different masks</strong>, each designed to detect edges in a specific compass direction (North, North-East, East, etc.).</p>
+            <p><strong>Standard Masks (3x3):</strong></p>
+            <p><em>(Note: The specific weights may vary slightly in different texts, but the structure remains the same: 5s in the direction of interest, -3s in the opposite.)</em></p>
+            <p><strong>1. North (N):</strong> $$\begin{bmatrix} 5 & 5 & 5 \\ -3 & 0 & -3 \\ -3 & -3 & -3 \end{bmatrix}$$</p>
+            <p><strong>2. North-West (NW):</strong> $$\begin{bmatrix} 5 & 5 & -3 \\ 5 & 0 & -3 \\ -3 & -3 & -3 \end{bmatrix}$$</p>
+            <p><strong>3. West (W):</strong> $$\begin{bmatrix} 5 & -3 & -3 \\ 5 & 0 & -3 \\ 5 & -3 & -3 \end{bmatrix}$$</p>
+            <p><strong>4. South-West (SW):</strong> $$\begin{bmatrix} -3 & -3 & -3 \\ 5 & 0 & -3 \\ 5 & 5 & -3 \end{bmatrix}$$</p>
+            <p><strong>5. South (S):</strong> $$\begin{bmatrix} -3 & -3 & -3 \\ -3 & 0 & -3 \\ 5 & 5 & 5 \end{bmatrix}$$</p>
+            <p><strong>6. South-East (SE):</strong> $$\begin{bmatrix} -3 & -3 & -3 \\ -3 & 0 & 5 \\ -3 & 5 & 5 \end{bmatrix}$$</p>
+            <p><strong>7. East (E):</strong> $$\begin{bmatrix} -3 & -3 & 5 \\ -3 & 0 & 5 \\ -3 & -3 & 5 \end{bmatrix}$$</p>
+            <p><strong>8. North-East (NE):</strong> $$\begin{bmatrix} -3 & 5 & 5 \\ -3 & 0 & 5 \\ -3 & -3 & -3 \end{bmatrix}$$</p>
+            <p><strong>How to Determine Edge Magnitude:</strong></p>
+            <ol>
+                <li><strong>Convolution:</strong> Convolve the input image with <strong>all 8 masks</strong> separately.</li>
+                <li><strong>Absolute Response:</strong> Take the absolute value of the response for each mask at every pixel location.</li>
+                <li><strong>Maximum Value:</strong> The <strong>Edge Magnitude</strong> at a specific pixel is the <strong>maximum</strong> value among the 8 responses. $M(x,y) = \max \{ |R_1|, |R_2|, ..., |R_8| \}$</li>
+                <li><strong>Edge Direction:</strong> The <strong>Edge Direction</strong> is determined by the mask that produced the maximum magnitude (e.g., if Mask North gives the highest value, the edge is horizontal, facing North).</li>
+            </ol>
+        </div>
+    </div>
+
+    <h2 id="sec5-3">5.3 Corner Detection</h2>
+    <div class="question-block">
+        <div class="question">Question: Explain the key idea underlying Corner Detection. What does it mean if the largest eigenvalue of the second moment matrix is much bigger than the second one?</div>
+        <div class="answer">
+            <p><strong>1. Key Idea Underlying Corner Detection</strong></p>
+            <p><strong>Corner Detection</strong> aims to identify points in an image where there is a significant change in the gradient direction in <strong>multiple directions</strong> (<em>Lec 5, Slide 42</em>).</p>
+            <ul>
+                <li><strong>Definition:</strong> A corner is typically the <strong>intersection of two edges</strong>.</li>
+                <li><strong>Key Idea:</strong> Unlike edges (which change intensity in one direction), corners exhibit intensity changes in <strong>two or more directions</strong>.</li>
+                <li><strong>Methods:</strong>
+                    <ul>
+                        <li><strong>Edge-Based:</strong> Detect edges first, then find where two edges meet.</li>
+                        <li><strong>Direct Detection:</strong> <strong>Moravec Detector</strong> (analyzes intensity changes in different directions) and <strong>Harris Detector</strong> (uses eigenvalues of the second-moment matrix).</li>
+                    </ul>
+                </li>
+                <li><strong>Importance:</strong> Corners are stable features used for object recognition, tracking, and stereo vision.</li>
+            </ul>
+            <p><strong>2. Why are they called "Harris Corners" and found via Second Moment Matrix?</strong></p>
+            <ul>
+                <li><strong>Name:</strong> They are called <strong>Harris Corners</strong> because the algorithm was proposed by <strong>Harris and Stephens (1988)</strong> specifically to detect <strong>corner points</strong> (interest points) that are invariant to rotation and illumination.</li>
+                <li><strong>Second Moment Matrix (Structure Tensor):</strong>
+                    <p>The Harris detector analyzes the <strong>local autocorrelation</strong> of the image signal using the second moment matrix $M$. This matrix summarizes the gradient distribution in a local window.</p>
+                    $$M = \sum_{x,y} w(x,y) \begin{bmatrix} I_x^2 & I_x I_y \\ I_x I_y & I_y^2 \end{bmatrix}$$
+                    <ul>
+                        <li><strong>$I_x, I_y$:</strong> Image gradients in $x$ and $y$ directions.</li>
+                        <li><strong>$w(x,y)$:</strong> Window function (e.g., Gaussian).</li>
+                    </ul>
+                </li>
+                <li><strong>Why this Matrix?</strong>
+                    <ul>
+                        <li>It captures how much intensity changes when the window is shifted in different directions.</li>
+                        <li><strong>Corners</strong> are points where intensity changes significantly in <strong>all directions</strong>. The eigenvalues of $M$ quantify this change.</li>
+                    </ul>
+                </li>
+            </ul>
+            <p><strong>3. Significance of Eigenvalues ($\lambda_1, \lambda_2$)</strong></p>
+            <p>The behavior of the corner response is determined by the eigenvalues of the matrix $M$.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Condition</th>
+                        <th>Eigenvalues</th>
+                        <th>Region Type</th>
+                        <th>Explanation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Flat Region</strong></td>
+                        <td>$\lambda_1 \approx 0, \lambda_2 \approx 0$</td>
+                        <td><strong>Flat</strong></td>
+                        <td>No intensity change in any direction.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Edge</strong></td>
+                        <td><strong>$\lambda_1 \gg \lambda_2$</strong> (or vice versa)</td>
+                        <td><strong>Edge</strong></td>
+                        <td>Significant change in <strong>one direction</strong> only (along the edge normal).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Corner</strong></td>
+                        <td>$\lambda_1 \approx \lambda_2$ (both large)</td>
+                        <td><strong>Corner</strong></td>
+                        <td>Significant change in <strong>all directions</strong>.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><strong>4. Answer to Specific Question:</strong></p>
+            <p><em>"What does it mean if the largest eigenvalue of that matrix is much bigger than the second one?"</em></p>
+            <ul>
+                <li><strong>Meaning:</strong> This indicates an <strong>EDGE</strong>, not a corner.</li>
+                <li><strong>Explanation:</strong>
+                    <ul>
+                        <li>If $\lambda_1$ is large and $\lambda_2$ is small ($\lambda_1 \gg \lambda_2$), it means there is a strong gradient in one direction but little to no gradient in the perpendicular direction.</li>
+                        <li>This corresponds to a straight line or boundary where intensity changes across the line but remains constant along the line.</li>
+                        <li><strong>Harris Corner Measure ($R$):</strong> The Harris detector uses the formula $R = \det(M) - k \cdot (\text{trace}(M))^2 = \lambda_1 \lambda_2 - k(\lambda_1 + \lambda_2)^2$.</li>
+                        <li>If $\lambda_1 \gg \lambda_2$, the term $k(\lambda_1 + \lambda_2)^2$ dominates, making $R$ <strong>negative</strong>. Negative $R$ values classify the point as an <strong>Edge</strong>.</li>
+                        <li>For a <strong>Corner</strong>, both $\lambda_1$ and $\lambda_2$ must be large, making $R$ <strong>positive</strong>.</li>
+                    </ul>
+                </li>
+            </ul>
+            <p><strong>Exam Key Point:</strong> Harris Corners require <strong>both</strong> eigenvalues to be large. If one is much larger than the other, it is an <strong>Edge</strong>. If both are small, it is a <strong>Flat Region</strong>.</p>
+        </div>
+    </div>
+
+
+    <h1 id="sec6" class="section-break">6. Histogram Processing</h1>
+    
+    <h2 id="sec6-1">6.1 Histogram Specification</h2>
+    <div class="question-block">
+        <div class="question">Question: Explain Histogram Specification vs. Histogram Equalization, and handling non-invertible reference distributions.</div>
+        <div class="answer">
+            <p><strong>1. Why Prefer Histogram Specification over Histogram Equalization?</strong></p>
+            <p><strong>Histogram Equalization (HE)</strong> forces the output image to have a <strong>uniform (flat) histogram</strong>. While this maximizes global contrast, it is not always desirable because:</p>
+            <ul>
+                <li><strong>Unnatural Appearance:</strong> A perfectly uniform histogram may make an image look artificial or over-enhanced.</li>
+                <li><strong>Specific Requirements:</strong> In some applications (e.g., medical imaging, satellite imagery), we may want the output image to match the intensity distribution of a <strong>specific reference image</strong> (e.g., a standard X-ray template) rather than a uniform distribution.</li>
+                <li><strong>Consistency:</strong> Specification allows multiple images to be processed to have the <strong>same histogram shape</strong>, ensuring consistency across a dataset.</li>
+            </ul>
+            <p><strong>Histogram Specification (Matching)</strong> allows us to transform an image so that its histogram matches a <strong>pre-specified reference distribution</strong>, giving us control over the final contrast and brightness characteristics.</p>
+            <p><strong>2. Principles of Histogram Specification</strong></p>
+            <p>The core principle is to map the cumulative distribution function (CDF) of the input image to the CDF of the reference image.</p>
+            <p><strong>Steps:</strong></p>
+            <ol>
+                <li><strong>Compute CDF of Input Image ($r$):</strong> Calculate the cumulative histogram $s_k = T(r_k) = (L-1) \sum_{j=0}^{k} p_r(r_j)$. This effectively equalizes the input image to a uniform distribution.</li>
+                <li><strong>Compute CDF of Reference Image ($z$):</strong> Calculate the cumulative histogram for the desired reference distribution: $v_k = G(z_k) = (L-1) \sum_{j=0}^{k} p_z(z_j)$.</li>
+                <li><strong>Mapping:</strong> Find the mapping from the input equalized values $s_k$ to the reference values $z_k$ such that their CDF values are as close as possible: $G(z_k) \approx s_k \quad \Rightarrow \quad z_k \approx G^{-1}(s_k)$</li>
+                <li><strong>Transformation:</strong> Replace each pixel $r_k$ in the original image with the mapped value $z_k$.</li>
+            </ol>
+            <p><strong>3. Handling Non-Invertible Reference Distributions</strong></p>
+            <p><strong>Problem:</strong></p>
+            <p>If the reference histogram has <strong>gaps</strong> (i.e., certain intensity levels have zero probability, $p(z) = 0$), its CDF $G(z)$ will have <strong>plateaus</strong> (flat regions). In these regions, the function is not strictly increasing, making the inverse function $G^{-1}(s)$ <strong>undefined or non-unique</strong>.</p>
+            <p><strong>Solution (Histogram Matching Procedure):</strong></p>
+            <p>Instead of strict mathematical inversion, we use an <strong>iterative mapping approach</strong> (<strong>Chapter 3, Slide 40-41</strong>):</p>
+            <ol>
+                <li>For each equalized input value $s_k$, search through the reference CDF values $G(z_q)$.</li>
+                <li>Find the reference intensity level $z_q$ that minimizes the difference: $| G(z_q) - s_k | = \text{minimum}$</li>
+                <li>Map $s_k \to z_q$.</li>
+                <li>If multiple $z_q$ values yield the same minimum difference, choose the <strong>smallest</strong> $z_q$ (or average them).</li>
+            </ol>
+            <p><strong>Exam Note:</strong> This ensures that even if the reference histogram is not invertible, we can still find the "closest match" in the reference distribution for every input intensity.</p>
+            <p><strong>Summary Table:</strong></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Histogram Equalization</th>
+                        <th>Histogram Specification</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Target Histogram</strong></td>
+                        <td>Uniform (Flat)</td>
+                        <td>User-defined / Reference</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Control</strong></td>
+                        <td>Automatic (No control)</td>
+                        <td>Controlled (Match specific shape)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Invertibility</strong></td>
+                        <td>Always invertible (CDF is monotonic)</td>
+                        <td>May not be invertible (gaps in ref.)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Solution for Gaps</strong></td>
+                        <td>N/A</td>
+                        <td>Minimize $|G(z) - s|$</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <h2 id="sec6-2">6.2 Bit Plane Decomposition</h2>
+    <div class="question-block">
+        <div class="question">Question: Explain the usefulness of Bit Plane Decomposition and find the bit planes for a given 3-bit image.</div>
+        <div class="answer">
+            <p><strong>i. Usefulness of Bit Plane Decomposition</strong></p>
+            <p>Decomposing an image into bit planes (separating the Most Significant Bits from Least Significant Bits) is useful for:</p>
+            <ol>
+                <li><strong>Image Compression:</strong> The lower bit planes (LSBs) often contain noise-like, visually insignificant information. They can be discarded or compressed more aggressively to save space without noticeable quality loss.</li>
+                <li><strong>Image Analysis:</strong> Specific bit planes may reveal textures or patterns not visible in the full grayscale image.</li>
+                <li><strong>Steganography (Watermarking):</strong> Secret data can be hidden in the LSBs because modifying them causes imperceptible changes to the human eye.</li>
+                <li><strong>Contrast Enhancement:</strong> Manipulating specific bit planes (like the MSB) can alter the overall contrast and structure of the image.</li>
+            </ol>
+            <p><strong>ii. Finding Bit-Planes of the 3-bit Image</strong></p>
+            <p><strong>Given Image ($4 \times 5$):</strong></p>
+            $$\begin{bmatrix} 6 & 7 & 6 & 7 \\ 0 & 0 & 0 & 2 \\ 1 & 1 & 1 & 3 \\ 4 & 5 & 4 & 2 \\ 6 & 6 & 7 & 7 \end{bmatrix}$$
+            <p><strong>Step 1: Convert Decimal to 3-bit Binary ($b_2 b_1 b_0$)</strong></p>
+            <ul>
+                <li>$0 \rightarrow 000$</li>
+                <li>$1 \rightarrow 001$</li>
+                <li>$2 \rightarrow 010$</li>
+                <li>$3 \rightarrow 011$</li>
+                <li>$4 \rightarrow 100$</li>
+                <li>$5 \rightarrow 101$</li>
+                <li>$6 \rightarrow 110$</li>
+                <li>$7 \rightarrow 111$</li>
+            </ul>
+            <p><strong>Binary Matrix:</strong></p>
+            $$\begin{bmatrix} 110 & 111 & 110 & 111 \\ 000 & 000 & 000 & 010 \\ 001 & 001 & 001 & 011 \\ 100 & 101 & 100 & 010 \\ 110 & 110 & 111 & 111 \end{bmatrix}$$
+            <p><strong>Step 2: Extract Bit Planes</strong></p>
+            <p><strong>Bit Plane 2 (MSB - $2^2$):</strong> <em>Left-most bit</em></p>
+            $$\begin{bmatrix} 1 & 1 & 1 & 1 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 1 & 1 & 1 & 0 \\ 1 & 1 & 1 & 1 \end{bmatrix}$$
+            <p><strong>Bit Plane 1 (Middle - $2^1$):</strong> <em>Middle bit</em></p>
+            $$\begin{bmatrix} 1 & 1 & 1 & 1 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 1 \\ 1 & 1 & 1 & 1 \end{bmatrix}$$
+            <p><strong>Bit Plane 0 (LSB - $2^0$):</strong> <em>Right-most bit</em></p>
+            $$\begin{bmatrix} 0 & 1 & 0 & 1 \\ 0 & 0 & 0 & 0 \\ 1 & 1 & 1 & 1 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 1 \end{bmatrix}$$
+        </div>
+    </div>
+
+    <h1 id="sec7" class="section-break">7. Frequency Domain Filtering</h1>
+    
+    <h2 id="sec7-1">7.1 Basic Steps of Frequency Domain Filtering</h2>
+    <div class="question-block">
+        <div class="question">Question: Explain the basic steps of Frequency Domain Filtering and calculate Phase and Spectrum.</div>
+        <div class="answer">
+            <p><strong>Basic Steps of Frequency Domain Filtering</strong></p>
+            <p>Frequency domain filtering involves modifying the image by manipulating its Fourier Transform coefficients rather than the pixels directly. This approach is based on the <strong>Convolution Theorem</strong>, which states that convolution in the spatial domain is equivalent to multiplication in the frequency domain.</p>
+            <p><strong>Steps:</strong></p>
+            <ol>
+                <li><strong>Compute 2D DFT:</strong> Calculate the 2D Discrete Fourier Transform (DFT) of the input image $f(x,y)$ to obtain the frequency domain representation $F(u,v)$.
+                    <p><em>Reference:</em> <strong>Ch 1.pdf (Slide 106)</strong> defines the Forward Transformation.</p>
+                    $$F(u,v) = \sum_{x=0}^{M-1} \sum_{y=0}^{N-1} f(x,y) e^{-j2\pi(ux/M + vy/N)}$$
+                </li>
+                <li><strong>Shift Zero-Frequency Component (Optional but Common):</strong> Multiply $f(x,y)$ by $(-1)^{x+y}$ before the transform, or shift the resulting $F(u,v)$ so that the zero-frequency component (DC component) is at the center of the spectrum. This makes filter design symmetric and easier to visualize.</li>
+                <li><strong>Apply Filter Function:</strong> Multiply the transformed image $F(u,v)$ by a filter transfer function $H(u,v)$. $G(u,v) = H(u,v) \cdot F(u,v)$
+                    <ul>
+                        <li><strong>Low-Pass Filter:</strong> Attenuates high frequencies (smoothing).</li>
+                        <li><strong>High-Pass Filter:</strong> Attenuates low frequencies (sharpening).</li>
+                    </ul>
+                    <p><em>Reference:</em> <strong>Ch 4_Filtering.pdf (Slide 13)</strong> mentions manipulation of Fourier transform for enhancement.</p>
+                </li>
+                <li><strong>Compute Inverse DFT:</strong> Calculate the Inverse Discrete Fourier Transform (IDFT) of the filtered product $G(u,v)$ to return to the spatial domain.
+                    <p><em>Reference:</em> <strong>Ch 1.pdf (Slide 107)</strong> defines the Inverse Transformation.</p>
+                    $$g(x,y) = \frac{1}{MN} \sum_{u=0}^{M-1} \sum_{v=0}^{N-1} G(u,v) e^{j2\pi(ux/M + vy/N)}$$
+                </li>
+                <li><strong>Extract Real Part:</strong> The result $g(x,y)$ may contain small imaginary components due to numerical precision. Take the real part to obtain the final filtered image.</li>
+            </ol>
+            <p><strong>Calculation of Phase and Spectrum (Fourier Domain)</strong></p>
+            <p><strong>Given:</strong> A $2 \times 2$ image in the spatial domain:</p>
+            $$f(x,y) = \begin{bmatrix} 1 & 0 \\ 2 & 1 \end{bmatrix}$$
+            <p>Where $M=2, N=2$. Coordinates $(x,y)$ range from $0$ to $1$.</p>
+            <p><strong>Formula for 2D DFT:</strong></p>
+            $$F(u,v) = \sum_{x=0}^{1} \sum_{y=0}^{1} f(x,y) e^{-j2\pi(\frac{ux}{2} + \frac{vy}{2})}$$
+            <p>Since $M=N=2$, the exponential term simplifies to $e^{-j\pi(ux + vy)} = (-1)^{ux+vy}$.</p>
+            <p><strong>Step 1: Calculate DFT Coefficients $F(u,v)$</strong></p>
+            <p><strong>For $(u=0, v=0)$:</strong> $F(0,0) = \sum \sum f(x,y) \cdot (-1)^{0} = 1 + 0 + 2 + 1 = \mathbf{4}$ <em>(This is the DC component / Average Intensity)</em></p>
+            <p><strong>For $(u=0, v=1)$:</strong> $F(0,1) = 1(1) + 0(-1) + 2(1) + 1(-1) = 1 + 0 + 2 - 1 = \mathbf{2}$</p>
+            <p><strong>For $(u=1, v=0)$:</strong> $F(1,0) = 1(1) + 0(1) + 2(-1) + 1(-1) = 1 + 0 - 2 - 1 = \mathbf{-2}$</p>
+            <p><strong>For $(u=1, v=1)$:</strong> $F(1,1) = 1(1) + 0(-1) + 2(-1) + 1(1) = 1 + 0 - 2 + 1 = \mathbf{0}$</p>
+            <p><strong>Resulting Fourier Domain Matrix:</strong></p>
+            $$F(u,v) = \begin{bmatrix} 4 & 2 \\ -2 & 0 \end{bmatrix}$$
+            <p><strong>Step 2: Calculate Magnitude Spectrum</strong></p>
+            <p>The spectrum (Magnitude) is defined as $|F(u,v)| = \sqrt{Re^2 + Im^2}$. Since all values are real:</p>
+            $$|F(u,v)| = \begin{bmatrix} |4| & |2| \\ |-2| & |0| \end{bmatrix} = \begin{bmatrix} 4 & 2 \\ 2 & 0 \end{bmatrix}$$
+            <p><strong>Step 3: Calculate Phase Spectrum</strong></p>
+            <p>The phase is defined as $\angle F(u,v) = \tan^{-1}(\frac{Im}{Re})$.</p>
+            <ul>
+                <li><strong>$F(0,0) = 4$:</strong> Positive real $\rightarrow$ Phase = <strong>0</strong></li>
+                <li><strong>$F(0,1) = 2$:</strong> Positive real $\rightarrow$ Phase = <strong>0</strong></li>
+                <li><strong>$F(1,0) = -2$:</strong> Negative real $\rightarrow$ Phase = <strong>$\pi$ (or $180^\circ$)</strong></li>
+                <li><strong>$F(1,1) = 0$:</strong> Zero $\rightarrow$ Phase = <strong>0</strong> (undefined, typically set to 0)</li>
+            </ul>
+            $$\text{Phase}(u,v) = \begin{bmatrix} 0 & 0 \\ \pi & 0 \end{bmatrix}$$
+        </div>
+    </div>
+
+    <h2 id="sec7-2">7.2 Butterworth Filters</h2>
+    <div class="question-block">
+        <div class="question">Question: Explain Butterworth Low-Pass and High-Pass Filters.</div>
+        <div class="answer">
+            <p>Butterworth filters are preferred over ideal filters because they provide a <strong>smooth transition</strong> between the passband and stopband, reducing "ringing artifacts."</p>
+            <p><strong>A. Butterworth Low-Pass Filter (BLPF)</strong></p>
+            <ul>
+                <li><strong>Function:</strong> Passes low frequencies, blocks high frequencies.</li>
+                <li><strong>Transfer Function:</strong> $H(u,v) = \frac{1}{1 + \left[ \frac{D(u,v)}{D_0} \right]^{2n}}$
+                    <ul>
+                        <li><strong>$D(u,v)$:</strong> Distance from the origin in the frequency domain ($\sqrt{u^2 + v^2}$).</li>
+                        <li><strong>$D_0$:</strong> Cutoff frequency (radius of the passband).</li>
+                        <li><strong>$n$:</strong> Order of the filter (controls the steepness of the transition).</li>
+                    </ul>
+                </li>
+                <li><strong>Effect:</strong> As $n$ increases, the filter becomes sharper (closer to an Ideal filter). As $n$ decreases, the transition is smoother.</li>
+            </ul>
+            <p><strong>B. Butterworth High-Pass Filter (BHPF)</strong></p>
+            <ul>
+                <li><strong>Function:</strong> Passes high frequencies, blocks low frequencies.</li>
+                <li><strong>Transfer Function:</strong> $H(u,v) = \frac{1}{1 + \left[ \frac{D_0}{D(u,v)} \right]^{2n}}$</li>
+                <li><strong>Effect:</strong> Enhances edges and details. Like the low-pass version, the order $n$ controls the sharpness of the cutoff.</li>
+            </ul>
+        </div>
+    </div>
+
+
+    <h1 id="sec8" class="section-break">8. Advanced Topics</h1>
+    
+    <h2 id="sec8-1">8.1 Watershed Segmentation</h2>
+    <div class="question-block">
+        <div class="question">Question: Explain Region-Based Segmentation and Morphological Watershed Algorithm.</div>
+        <div class="answer">
+            <p><strong>1. Why is Region-Based Approach Better?</strong></p>
+            <p>Region-based segmentation groups pixels into regions based on similarity (gray level, texture, color) rather than detecting discontinuities (<em>Lecture06, Slide 53</em>).</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Edge/Threshold-Based</th>
+                        <th>Region-Based</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Noise Sensitivity</strong></td>
+                        <td><strong>High:</strong> Noise creates false edges or gaps.</td>
+                        <td><strong>Low:</strong> Averages properties over regions; robust to noise.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Boundary Continuity</strong></td>
+                        <td>Often produces broken edges requiring linking.</td>
+                        <td>Produces closed regions inherently.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Illumination</strong></td>
+                        <td>Global thresholding fails with uneven lighting.</td>
+                        <td>Can adapt locally (e.g., Region Growing).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Best Use Case</strong></td>
+                        <td>High contrast, clean images.</td>
+                        <td><strong>Noisy images</strong>, textured regions, medical images.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><strong>Key Advantage:</strong> Region-based techniques are <strong>better than edge-based techniques in noisy images where edges are difficult to detect</strong> (<em>Lecture06, Slide 53</em>).</p>
+            <p><strong>2. Morphological Watershed Segmentation</strong></p>
+            <p><strong>A. Working Principles (Topographic Interpretation)</strong></p>
+            <p>The watershed algorithm treats the image as a <strong>topographic surface</strong> where intensity values represent elevation (<em>Lecture06, Slide 65</em>).</p>
+            <ol>
+                <li><strong>Regional Minima:</strong> Points where water would collect (lowest intensity values).</li>
+                <li><strong>Catchment Basins:</strong> Regions where water flows down to a specific minimum.</li>
+                <li><strong>Watershed Lines (Divide Lines):</strong> Boundaries where water would be equally likely to flow to two or more minima. These lines form the <strong>segmentation boundaries</strong>.</li>
+            </ol>
+            <p><strong>Flooding Analogy (<em>Lecture06, Slide 68</em>):</strong></p>
+            <ol>
+                <li>Punch holes in each regional minimum.</li>
+                <li>Flood the surface from below at a uniform rate.</li>
+                <li>As water rises, distinct catchment basins expand.</li>
+                <li>When water from two basins is about to merge, build a <strong>dam</strong>.</li>
+                <li>The set of all dams forms the <strong>watershed lines</strong>.</li>
+            </ol>
+            <p><strong>B. Watershed Segmentation Algorithm</strong></p>
+            <p>Based on <strong>Lecture06, Slide 70</strong>, the algorithm proceeds as follows:</p>
+            <ol>
+                <li><strong>Initialization:</strong> Start with all pixels having the <strong>lowest possible intensity value</strong>. These form the basis for initial watersheds (regions).</li>
+                <li><strong>Iteration:</strong> For each intensity level $k$ (from min to max):
+                    <ul>
+                        <li>Consider each group of pixels with intensity $k$.</li>
+                        <li>Check adjacency to existing regions.</li>
+                    </ul>
+                </li>
+                <li><strong>Decision Rules:</strong>
+                    <ul>
+                        <li><strong>Case 1:</strong> If adjacent to <strong>exactly one</strong> existing region $\rightarrow$ Add these pixels to that region.</li>
+                        <li><strong>Case 2:</strong> If adjacent to <strong>more than one</strong> existing region $\rightarrow$ Mark as <strong>boundary</strong> (watershed line).</li>
+                        <li><strong>Case 3:</strong> If adjacent to <strong>no</strong> existing region $\rightarrow$ Start a <strong>new region</strong>.</li>
+                    </ul>
+                </li>
+                <li><strong>Termination:</strong> Stop when all intensity levels have been processed.</li>
+            </ol>
+            <p><strong>C. Practical Consideration</strong></p>
+            <ul>
+                <li><strong>Over-segmentation:</strong> Due to noise, there may be too many local minima, creating too many small regions (<em>Lecture06, Slide 73</em>).</li>
+                <li><strong>Solution:</strong> Use <strong>Markers</strong>. Limit the number of regional minima by specifying internal markers (objects) and external markers (background) before applying the watershed algorithm (<em>Lecture06, Slide 75</em>).</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 id="sec8-2">8.2 Pattern Recognition</h2>
+    <div class="question-block">
+        <div class="question">Question: Compare Statistical vs. Structural Methods for Pattern Recognition.</div>
+        <div class="answer">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th><strong>Statistical Methods</strong></th>
+                        <th><strong>Structural (Syntactic) Methods</strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Basis</strong></td>
+                        <td>Based on <strong>quantitative descriptors</strong> (numerical features).</td>
+                        <td>Based on <strong>qualitative descriptors</strong> (relationships between sub-patterns).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Features Used</strong></td>
+                        <td>Mean, variance, texture moments, Fourier descriptors, pixel intensities.</td>
+                        <td>Primitives (lines, arcs), graphs, grammars, topology.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Best For</strong></td>
+                        <td>Patterns that are <strong>random</strong> or lack clear geometric structure (e.g., terrain, clouds, fingerprints texture).</td>
+                        <td>Patterns that are <strong>highly structured</strong> and composed of distinct parts (e.g., characters, chromosomes, engineering drawings).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Approach</strong></td>
+                        <td><strong>Decision Theoretic:</strong> Uses classifiers (e.g., Bayes, Neural Networks) to draw decision boundaries in feature space.</td>
+                        <td><strong>Grammar Parsing:</strong> Uses syntax rules to analyze how primitives are arranged (like parsing a sentence).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Complexity</strong></td>
+                        <td>Generally computationally simpler for feature extraction.</td>
+                        <td>Can be computationally complex due to parsing and relationship analysis.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <h2 id="sec8-3">8.3 Robot Vision</h2>
+    <div class="question-block">
+        <div class="question">Question: Explain Visual Servoing and ARMAR-III Task Planning with 6D Pose Estimation.</div>
+        <div class="answer">
+            <p><strong>1. What is Visual Servoing?</strong></p>
+            <p><strong>Visual Servoing</strong> is a control technique that uses visual feedback (information extracted from one or more cameras) to control the motion of a robot.</p>
+            <ul>
+                <li><strong>Goal:</strong> To minimize the error between the <strong>current visual features</strong> and the <strong>desired visual features</strong>.</li>
+                <li><strong>Loop:</strong> It closes the control loop in the <strong>visual space</strong> rather than just joint space.</li>
+                <li><strong>Equation:</strong> $\dot{r} = -\lambda \cdot e$, where $e$ is the visual error and $\dot{r}$ is the robot velocity.</li>
+            </ul>
+            <p><strong>2. Control Techniques of Visual Servoing</strong></p>
+            <p>There are two primary approaches based on where the error is calculated:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Technique</th>
+                        <th>Full Form</th>
+                        <th>Principle</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>PBVS</strong></td>
+                        <td><strong>Position-Based Visual Servoing</strong></td>
+                        <td>Reconstructs the <strong>3D pose</strong> of the target from images. Error is calculated in <strong>Cartesian space</strong> (3D position/orientation). Requires camera calibration and geometric model.</td>
+                        <td>A robot arm moving to pick up a cup where the exact 3D coordinates $(x,y,z)$ of the cup are estimated first.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>IBVS</strong></td>
+                        <td><strong>Image-Based Visual Servoing</strong></td>
+                        <td>Uses <strong>2D image features</strong> directly (pixels, corners, lines). Error is calculated in <strong>Image space</strong>. Uses an Interaction Matrix (Image Jacobian).</td>
+                        <td>A drone hovering over a landing pad by keeping the pad's corners at specific pixel coordinates in the camera view.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hybrid</strong></td>
+                        <td><strong>Hybrid Visual Servoing</strong></td>
+                        <td>Combines PBVS and IBVS to leverage advantages of both (e.g., depth from PBVS, lateral motion from IBVS).</td>
+                        <td>Complex assembly tasks requiring precise depth and alignment.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><strong>3. ARMAR-III Humanoid Robot Scenario</strong></p>
+            <p><strong>Scenario:</strong> ARMAR-III is observing the environment and planning a task using <strong>6D Pose Estimation</strong>.</p>
+            <p><strong>A. The Task</strong></p>
+            <ul>
+                <li><strong>Likely Task:</strong> <strong>Object Manipulation (Grasping)</strong>.</li>
+                <li><strong>Description:</strong> The robot needs to locate a specific object (e.g., a bottle, tool, or door handle) in an unstructured environment and physically interact with it (pick it up, open it, or hand it over).</li>
+                <li><strong>Why 6D?</strong> To grasp an object successfully, the robot needs more than just location $(x, y, z)$; it needs the <strong>orientation</strong> $(roll, pitch, yaw)$ to align its gripper correctly with the object's handle or surface.</li>
+            </ul>
+            <p><strong>B. How it Achieves the Task (Workflow)</strong></p>
+            <ol>
+                <li><strong>Observation (Input):</strong> The robot uses onboard cameras (head or eye-in-hand) to capture images of the scene.</li>
+                <li><strong>6D Pose Estimation:</strong>
+                    <ul>
+                        <li><strong>Detection:</strong> Identify the object using features (e.g., SIFT, Harris Corners) or Deep Learning (e.g., CNNs).</li>
+                        <li><strong>Estimation:</strong> Calculate the <strong>6 Degrees of Freedom (6DoF)</strong> pose:
+                            <ul>
+                                <li><strong>Position:</strong> $(x, y, z)$ relative to the robot's base frame.</li>
+                                <li><strong>Orientation:</strong> $(\theta_x, \theta_y, \theta_z)$ or Rotation Matrix $R$.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><strong>Task Planning:</strong> Path planning algorithms compute a collision-free trajectory for the arm to reach the estimated pose.</li>
+                <li><strong>Visual Servoing (Execution):</strong> As the arm moves, visual feedback corrects small errors in the pose estimation (closed-loop control). The robot adjusts its gripper orientation to match the object's orientation.</li>
+                <li><strong>Action:</strong> Close gripper $\rightarrow$ Lift/Manipulate $\rightarrow$ Verify with vision.</li>
+            </ol>
+        </div>
+    </div>
+
+    <h1 class="section-break">9. Additional Topics</h1>
+    
+    <h2>9.1 Categories of Image Redundancy</h2>
+    <div class="question-block">
+        <div class="question">Question: How many primary types of redundancies are there in an image and what are they?</div>
+        <div class="answer">
+            <p>Based on <strong>Image Compression_MMH.pdf (Slide 7)</strong>, there are <strong>three (3) primary types</strong> of image redundancy. Compression algorithms aim to reduce one or more of these.</p>
+            <p><strong>1. Coding Redundancy</strong></p>
+            <ul>
+                <li><strong>Definition:</strong> Occurs when the code (e.g., binary representation) used to represent pixel intensities is not optimal.</li>
+                <li><strong>Explanation:</strong> If a fixed-length code (e.g., 8 bits) is used for all pixels, but some intensity levels occur much more frequently than others, data is wasted.</li>
+                <li><strong>Removal Technique:</strong> Use <strong>Variable-Length Coding</strong> (e.g., <strong>Huffman Coding</strong>, Arithmetic Coding) where shorter codes are assigned to frequent symbols and longer codes to rare symbols (<strong>Slide 9-12</strong>).</li>
+                <li><strong>Type:</strong> Lossless.</li>
+            </ul>
+            <p><strong>2. Interpixel Redundancy (Spatial Redundancy)</strong></p>
+            <ul>
+                <li><strong>Definition:</strong> Arises from the <strong>correlation between neighboring pixels</strong>.</li>
+                <li><strong>Explanation:</strong> In most images, the value of a pixel can be reasonably predicted by the values of its neighbors (e.g., in a smooth sky region, adjacent pixels are almost identical). This means individual pixels do not carry unique information.</li>
+                <li><strong>Removal Technique:</strong> Use <strong>Transforms</strong> (e.g., <strong>DCT</strong>, <strong>DFT</strong>, <strong>DWT</strong>) or <strong>Predictive Coding</strong> to decorrelate the pixels (<strong>Slide 13-14</strong>).</li>
+                <li><strong>Type:</strong> Lossless or Lossy.</li>
+            </ul>
+            <p><strong>3. Psychovisual Redundancy</strong></p>
+            <ul>
+                <li><strong>Definition:</strong> Associated with the <strong>human visual system's sensitivity</strong>.</li>
+                <li><strong>Explanation:</strong> The human eye does not respond with equal sensitivity to all visual information. It is more sensitive to low frequencies (smooth areas) and less sensitive to high frequencies (fine details).</li>
+                <li><strong>Removal Technique:</strong> Discard data that is perceptually insignificant (e.g., <strong>Quantization</strong> in JPEG removes high-frequency DCT coefficients) (<strong>Slide 15-16</strong>).</li>
+                <li><strong>Type:</strong> <strong>Lossy</strong> (Irreversible).</li>
+            </ul>
+            <p><strong>Summary Table:</strong></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Redundancy Type</th>
+                        <th>Source</th>
+                        <th>Removal Technique</th>
+                        <th>Compression Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Coding</strong></td>
+                        <td>Inefficient code words</td>
+                        <td>Huffman, Arithmetic Coding</td>
+                        <td>Lossless</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Interpixel</strong></td>
+                        <td>Correlation between pixels</td>
+                        <td>DCT, Transform, Prediction</td>
+                        <td>Lossless/Lossy</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Psychovisual</strong></td>
+                        <td>Human eye sensitivity</td>
+                        <td>Quantization</td>
+                        <td><strong>Lossy</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><strong>Exam Key Point:</strong> Memorize the three names. <strong>Coding</strong> = Bit representation; <strong>Interpixel</strong> = Neighbor correlation; <strong>Psychovisual</strong> = Human perception. Quantization is the key step for removing Psychovisual redundancy.</p>
+        </div>
+    </div>
+
+    <h2>9.2 HSI Color Model</h2>
+    <div class="question-block">
+        <div class="question">Question: What does the HSI color model stand for and what does it represent? Explain hue and saturation.</div>
+        <div class="answer">
+            <p><strong>HSI Color Model</strong></p>
+            <ul>
+                <li><strong>Full Form:</strong> <strong>H</strong>ue, <strong>S</strong>aturation, <strong>I</strong>ntensity.</li>
+                <li><strong>Representation:</strong>
+                    <ul>
+                        <li>The HSI model is designed to match <strong>human perception</strong> of color rather than hardware implementation (like RGB).</li>
+                        <li>It separates <strong>color information</strong> (Hue, Saturation) from <strong>brightness information</strong> (Intensity).</li>
+                        <li>This makes it ideal for image processing tasks like segmentation and enhancement, as operations can be performed on color without affecting brightness, and vice versa.</li>
+                    </ul>
+                </li>
+            </ul>
+            <p><strong>Explanation of Hue and Saturation</strong></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Component</th>
+                        <th>Definition</th>
+                        <th>Representation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Hue ($H$)</strong></td>
+                        <td>Represents the <strong>dominant color</strong> perceived by the human eye.</td>
+                        <td>Describes the "type" of color (e.g., Red, Green, Blue). Measured as an <strong>angle</strong> ($0^\circ$ to $360^\circ$) on a color wheel. Example: $0^\circ$ = Red, $120^\circ$ = Green, $240^\circ$ = Blue.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Saturation ($S$)</strong></td>
+                        <td>Represents the <strong>purity</strong> or <strong>richness</strong> of the color.</td>
+                        <td>Describes how much white light is mixed with the hue. Measured as a <strong>percentage</strong> or ratio ($0$ to $1$). <strong>$S = 0$:</strong> Completely unsaturated (Gray/White/Black). <strong>$S = 1$:</strong> Fully saturated (Pure spectral color).</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><strong>Exam Note:</strong> Intensity ($I$) corresponds to the overall brightness (similar to grayscale). HSI is preferred for segmentation because <strong>Hue</strong> is less sensitive to shadows and highlights than RGB values.</p>
+        </div>
+    </div>
+
+    <h2>9.3 Histograms After Blurring</h2>
+    <div class="question-block">
+        <div class="question">Question: Two images have identical histograms. After applying a 3x3 averaging mask, will the resultant histograms be the same?</div>
+        <div class="answer">
+            <p><strong>Answer:</strong> <strong>No, the resultant histograms would NOT be the same.</strong></p>
+            <p><strong>Justification:</strong></p>
+            <p>While the two original images have identical global histograms (same number of 0s and 1s), <strong>spatial filtering depends on the spatial arrangement of pixels</strong>, not just their frequency.</p>
+            <p><strong>1. Image 1 (Half Black, Half White):</strong></p>
+            <ul>
+                <li>Most of the image consists of uniform regions (all 0s or all 1s).</li>
+                <li>When a $3 \times 3$ averaging mask slides over these uniform regions, the output value remains <strong>0</strong> or <strong>1</strong>.</li>
+                <li>Only along the single vertical boundary line will the mask cover a mix of 0s and 1s, producing intermediate values (e.g., $1/9, 2/9, \dots$).</li>
+                <li><strong>Resultant Histogram:</strong> Will still have <strong>large spikes at 0 and 1</strong> (representing the uniform areas) and a very small number of pixels with intermediate values.</li>
+            </ul>
+            <p><strong>2. Image 2 (Checkerboard):</strong></p>
+            <ul>
+                <li>The pixels alternate frequently between 0 and 1.</li>
+                <li>Almost every position of the $3 \times 3$ mask will cover a mix of 0s and 1s. It is unlikely to find a $3 \times 3$ area of all 0s or all 1s.</li>
+                <li>The average values will cluster around the mean (0.5). For example, a window might have five 1s and four 0s (average $5/9 \approx 0.55$).</li>
+                <li><strong>Resultant Histogram:</strong> Will have <strong>very few or no pixels at 0 or 1</strong>. Most values will be concentrated in the <strong>middle of the range</strong> (around 0.4 to 0.6).</li>
+            </ul>
+            <p><strong>Conclusion:</strong> Since the distribution of pixel values after filtering is drastically different (spikes at ends vs. cluster in middle), the histograms are not the same.</p>
+        </div>
+    </div>
+
+    <h2>9.4 Median vs. Averaging for Salt-and-Pepper Noise</h2>
+    <div class="question-block">
+        <div class="question">Question: Is Median filtering superior to Averaging for Salt-and-Pepper noise?</div>
+        <div class="answer">
+            <p><strong>Justification:</strong></p>
+            <p>The statement is <strong>True</strong>. Median filtering is superior for salt-and-pepper noise for the following reasons:</p>
+            <ol>
+                <li><strong>Outlier Rejection:</strong> Salt-and-pepper noise consists of extreme values (0 and 255) that are statistical outliers.
+                    <ul>
+                        <li><strong>Averaging (Mean) Filter:</strong> Calculates the arithmetic mean. If a pixel is noise (e.g., 255) and its neighbors are normal (e.g., 100), the average is pulled towards the noise value. This <strong>smears</strong> the noise into the surrounding area rather than removing it.</li>
+                        <li><strong>Median Filter:</strong> Sorts the pixel values in the neighborhood and selects the <strong>middle value</strong>. Extreme outliers (0 or 255) end up at the ends of the sorted list and are discarded. The median represents the true underlying intensity of the region.</li>
+                    </ul>
+                </li>
+                <li><strong>Edge Preservation:</strong> Averaging blurs edges because it mixes pixel values across boundaries. Median filtering preserves sharp edges better because it selects an existing pixel value from the neighborhood rather than creating a new blended value.</li>
+            </ol>
+        </div>
+    </div>
+
+    <h2>9.5 Python Program for Noise Addition and Denoising</h2>
+    <div class="question-block">
+        <div class="question">Question: Write a Python program to add Salt and Pepper noise and remove it using a Median Filter.</div>
+        <div class="answer">
+            <pre>import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+# 1. Load Image
+image = cv2.imread('input.jpg', 0)  # Load as grayscale
+if image is None:
+    # Create a dummy image if file not found (for demonstration)
+    image = np.random.randint(0, 255, (256, 256), dtype=np.uint8)
+
+# 2. Add Salt and Pepper Noise
+def add_salt_pepper_noise(image, prob):
+    output = np.copy(image)
+    # Salt (White)
+    num_salt = np.ceil(prob * image.size * 0.5)
+    coords = [np.random.randint(0, i - 1, int(num_salt)) for i in image.shape]
+    output[coords[0], coords[1]] = 255
+    # Pepper (Black)
+    num_pepper = np.ceil(prob * image.size * 0.5)
+    coords = [np.random.randint(0, i - 1, int(num_pepper)) for i in image.shape]
+    output[coords[0], coords[1]] = 0
+    return output
+
+noisy_image = add_salt_pepper_noise(image, 0.05)  # 5% noise
+
+# 3. Apply Denoising Filter (Median Filter is best for Salt and Pepper)
+denoised_image = cv2.medianBlur(noisy_image, 5)  # Kernel size 5x5
+
+# 4. Display Results
+plt.figure(figsize=(15, 5))
+
+plt.subplot(1, 3, 1)
+plt.title("Original Image")
+plt.imshow(image, cmap='gray')
+plt.axis('off')
+
+plt.subplot(1, 3, 2)
+plt.title("Noisy Image (Salt and Pepper)")
+plt.imshow(noisy_image, cmap='gray')
+plt.axis('off')
+
+plt.subplot(1, 3, 3)
+plt.title("Denoised Image (Median Filter)")
+plt.imshow(denoised_image, cmap='gray')
+plt.axis('off')
+
+plt.show()</pre>
+        </div>
+    </div>
+
+    <h2>9.6 Laplacian Sharpening and Unsharp Masking</h2>
+    <div class="question-block">
+        <div class="question">Question: Explain Laplacian Sharpening, Unsharp Masking, and High-Boost Filtering.</div>
+        <div class="answer">
+            <p><strong>1. Laplacian Operator for Image Sharpening</strong></p>
+            <p>The <strong>Laplacian</strong> is a <strong>second-order derivative operator</strong> used to highlight regions of rapid intensity change (edges and fine details) while ignoring regions with constant intensity.</p>
+            <ul>
+                <li><strong>Mathematical Definition:</strong> For a continuous function $f(x,y)$, the Laplacian is: $\nabla^2 f = \frac{\partial^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial y^2}$</li>
+                <li><strong>Discrete Implementation:</strong> In digital images, it is implemented using convolution masks (e.g., 4-neighborhood or 8-neighborhood).
+                    <ul>
+                        <li><strong>4-Neighbor Mask:</strong> Center = $-4$, Neighbors = $1$.</li>
+                        <li><strong>8-Neighbor Mask:</strong> Center = $-8$, Neighbors = $1$.</li>
+                    </ul>
+                </li>
+                <li><strong>Sharpening Mechanism:</strong> The Laplacian output ($\nabla^2 f$) highlights edges but removes the background (zero mean). To sharpen the image, we <strong>add the Laplacian result back to the original image</strong>. This restores the background while enhancing the edges. $\boxed{g(x,y) = f(x,y) + c \cdot [\nabla^2 f(x,y)]}$
+                    <ul>
+                        <li><strong>$c = -1$:</strong> If the mask center is <strong>negative</strong> (e.g., $-4, -8$).</li>
+                        <li><strong>$c = 1$:</strong> If the mask center is <strong>positive</strong> (e.g., $4, 8$).</li>
+                    </ul>
+                </li>
+            </ul>
+            <p><strong>2. Unsharp Masking and High-Boost Filtering</strong></p>
+            <p>These are spatial filtering techniques used to sharpen images by subtracting a blurred version from the original.</p>
+            <ul>
+                <li><strong>Unsharp Masking:</strong>
+                    <ol>
+                        <li><strong>Blur</strong> the original image $f(x,y)$ to create $\bar{f}(x,y)$.</li>
+                        <li><strong>Subtract</strong> the blurred image from the original to create a <strong>mask</strong> (high-frequency details): $g_{mask}(x,y) = f(x,y) - \bar{f}(x,y)$</li>
+                        <li><strong>Add</strong> the mask back to the original: $g(x,y) = f(x,y) + g_{mask}(x,y)$</li>
+                    </ol>
+                </li>
+                <li><strong>High-Boost Filtering:</strong> A generalized version where the mask is amplified by a factor $k \ge 1$. $\boxed{g_{hb}(x,y) = f(x,y) + k \cdot g_{mask}(x,y)}$
+                    <ul>
+                        <li>If <strong>$k = 1$:</strong> Standard Unsharp Masking.</li>
+                        <li>If <strong>$k > 1$:</strong> High-Boost Filtering (stronger sharpening).</li>
+                    </ul>
+                </li>
+            </ul>
+            <p><strong>3. Steps for Printing and Publishing Photos (Unsharp Masking Method)</strong></p>
+            <p>Based on <strong>Chapter 3 (Slide 79)</strong>, the standard procedure used in the printing industry is:</p>
+            <ol>
+                <li><strong>Blur the Original Image:</strong> Apply a low-pass filter (smoothing) to the original image $f(x,y)$ to create a blurred version $\bar{f}(x,y)$.</li>
+                <li><strong>Subtract to Create Mask:</strong> Subtract the blurred image from the original: $g_{mask} = f - \bar{f}$. This isolates edges and fine details.</li>
+                <li><strong>Add Mask to Original:</strong> Add the mask back to the original image. For high-boost, multiply the mask by a factor $k$ before adding: $g = f + k \cdot g_{mask}$.</li>
+                <li><strong>Clamping (Optional):</strong> Ensure pixel values remain within the valid range (e.g., 0-255).</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: "$$", right: "$$", display: true},
+                    {left: "$", right: "$", display: false}
+                ],
+                throwOnError: false
+            });
+        });
+    </script>
+</div>
+</body>
+</html>
