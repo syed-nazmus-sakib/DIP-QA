@@ -264,6 +264,18 @@
             <li class="toc-section"><a href="#sec13">13. Clutch &amp; Brake Systems</a></li>
             <li class="toc-subsection"><a href="#sec13-1">Q: Briefly describe the functions and working principle of a single plate diaphragm clutch with diagram.</a></li>
             <li class="toc-subsection"><a href="#sec13-2">Q: What do you mean by internal expanding brakes?</a></li>
+            <li class="toc-section"><a href="#sec14">14. Numerical Problems &mdash; Rope Drive</a></li>
+            <li class="toc-subsection"><a href="#sec14-1">Q: Find speed of pulley in r.p.m. and power transmitted when maximum power prevails (Rope Drive).</a></li>
+            <li class="toc-subsection"><a href="#sec14-2">Q: Find belt length, angle of contact, and power transmitted for a crossed belt drive.</a></li>
+            <li class="toc-subsection"><a href="#sec14-3">Q: Find speed lost by the driven pulley due to creep.</a></li>
+            <li class="toc-subsection"><a href="#sec14-4">Q: [2024 Exam] Rate the horsepower output of a spur gear using Lewis Equation.</a></li>
+            <li class="toc-subsection"><a href="#sec14-5">Q: [2021 Exam] Find path of contact, arc of contact and contact ratio for involute gears.</a></li>
+            <li class="toc-subsection"><a href="#sec14-6">Q: [2021 Exam] Find machine shaft speed with belt thickness, no slip and 3% slip.</a></li>
+            <li class="toc-subsection"><a href="#sec14-7">Q: [2024 Exam] Find dynamo shaft speed in compound belt drive with no slip and 2% slip at each drive.</a></li>
+            <li class="toc-subsection"><a href="#sec14-8">Q: [2021 Exam] Simple band brake &mdash; torque and number of turns to rest.</a></li>
+            <li class="toc-subsection"><a href="#sec14-9">Q: [2022 Exam] Differential band brake &mdash; actuating force and self-locking condition.</a></li>
+            <li class="toc-subsection"><a href="#sec14-10">Q: [2024 Exam] Hollow shaft max torque &mdash; dual constraint (strength vs. rigidity).</a></li>
+            <li class="toc-subsection"><a href="#sec14-11">Q: [2022 Exam] Flexible shaft with distributed friction &mdash; max length and angular deformation.</a></li>
         </ul>
     </div>
 
@@ -838,6 +850,577 @@
                 <li><strong>Friction Generation:</strong> The friction between the stationary linings and the rotating drum converts the kinetic energy of the vehicle into heat.</li>
                 <li><strong>Self-Energizing Effect:</strong> Depending on the direction of rotation, one shoe (the leading shoe) is pulled into the drum by the frictional force itself, increasing the braking pressure automatically. The other is called the trailing shoe.</li>
             </ul>
+        </div>
+    </div>
+
+    <h1 id="sec14" class="section-break">14. Numerical Problems &mdash; Rope Drive</h1>
+
+    <h2 id="sec14-1">14.1 Pulley Speed &amp; Maximum Power (Rope Drive)</h2>
+    <div class="question-block">
+        <div class="question">Question: A rope drive has the following data &mdash; Pulley diameter: 3.6 m, Number of grooves: 15, Groove angle: 45&deg;, Angle of contact: 170&deg;, Coefficient of friction: 0.28, Maximum tension: 960 N, Rope mass: 1.5 kg/m. Find speed of pulley in r.p.m. and power transmitted when maximum power prevails.</div>
+        <div class="answer">
+            <p>To find the speed and power under the condition of <strong>maximum power</strong>, we must account for centrifugal tension ($T_c$). In rope or V-belt drives with grooves, we use an &ldquo;equivalent&rdquo; coefficient of friction ($\mu'$).</p>
+
+            <p><strong>1. Given Data:</strong></p>
+            <ul>
+                <li>Diameter of pulley ($d$) = $3.6 \text{ m}$ (Radius $r = 1.8 \text{ m}$)</li>
+                <li>Number of ropes ($n$) = $15$</li>
+                <li>Groove angle ($2\beta$) = $45^\circ$ ($\beta = 22.5^\circ$)</li>
+                <li>Angle of contact ($\theta$) = $170^\circ = 170 \times \frac{\pi}{180} = 2.967 \text{ rad}$</li>
+                <li>Coefficient of friction ($\mu$) = $0.28$</li>
+                <li>Maximum Tension ($T$) = $960 \text{ N}$</li>
+                <li>Mass of rope ($m$) = $1.5 \text{ kg/m}$</li>
+            </ul>
+
+            <p><strong>2. Step-by-Step Calculation:</strong></p>
+
+            <p><strong>Step A: Condition for Maximum Power</strong></p>
+            <p>Maximum power occurs when centrifugal tension ($T_c$) is one-third of the maximum allowable tension ($T$).</p>
+            $$T_c = \frac{T}{3} = \frac{960}{3} = 320 \text{ N}$$
+
+            <p><strong>Step B: Velocity of the Pulley ($v$)</strong></p>
+            <p>We know that $T_c = m v^2$.</p>
+            $$320 = 1.5 \times v^2$$
+            $$v^2 = \frac{320}{1.5} = 213.33 \implies v = \sqrt{213.33} = \mathbf{14.61 \text{ m/s}}$$
+
+            <p><strong>Step C: Speed in R.P.M. ($N$)</strong></p>
+            <p>Using the linear velocity formula $v = \frac{\pi d N}{60}$:</p>
+            $$14.61 = \frac{\pi \times 3.6 \times N}{60}$$
+            $$N = \frac{14.61 \times 60}{\pi \times 3.6} = \mathbf{77.5 \text{ r.p.m.}}$$
+
+            <p><strong>Step D: Tension in Tight and Slack Sides</strong></p>
+            <p><strong>1. Tight side tension ($T_1$):</strong> At maximum power, $T_1 = T - T_c = 960 - 320 = 640 \text{ N}$.</p>
+            <p><strong>2. Equivalent coefficient of friction ($\mu'$):</strong> For a grooved pulley:</p>
+            $$\mu' = \frac{\mu}{\sin \beta} = \frac{0.28}{\sin 22.5^\circ} = \frac{0.28}{0.3827} = 0.7317$$
+            <p><strong>3. Slack side tension ($T_2$):</strong> Using the tension ratio formula $\frac{T_1}{T_2} = e^{\mu' \theta}$:</p>
+            $$\frac{640}{T_2} = e^{0.7317 \times 2.967} = e^{2.17} = 8.758$$
+            $$T_2 = \frac{640}{8.758} = 73.07 \text{ N}$$
+
+            <p><strong>Step E: Total Power Transmitted ($P$)</strong></p>
+            <p>Power for one rope: $P_{\text{unit}} = (T_1 - T_2) \times v$</p>
+            $$P_{\text{unit}} = (640 - 73.07) \times 14.61 = 566.93 \times 14.61 = 8282.8 \text{ W}$$
+            <p>Total Power for 15 ropes:</p>
+            $$P_{\text{total}} = 15 \times 8282.8 = 124{,}242 \text{ W} = \mathbf{124.24 \text{ kW}}$$
+
+            <p><strong>Final Results:</strong></p>
+            <table>
+                <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Speed of Pulley</strong></td><td>$77.5 \text{ r.p.m.}$</td></tr>
+                    <tr><td><strong>Maximum Power Transmitted</strong></td><td>$124.24 \text{ kW}$</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <h2 id="sec14-2">14.2 Crossed Belt Drive &mdash; Belt Length, Angle of Contact &amp; Power</h2>
+    <div class="question-block">
+        <div class="question">Question: Two pulleys, one 450 mm diameter and the other 200 mm diameter are on parallel shafts 1.95 m apart and are connected by a crossed belt. Find the length of the belt required and the angle of contact between the belt and each pulley. What power can be transmitted by the belt when the larger pulley rotates at 200 rev/min, if the maximum permissible tension in the belt is 1 kN, and the coefficient of friction between the belt and pulley is 0.25?</div>
+        <div class="answer">
+            <p>For a <strong>crossed belt drive</strong>, we break the problem into geometry (belt length, angle of contact) and dynamics (power transmission).</p>
+
+            <p><strong>1. Given Data:</strong></p>
+            <ul>
+                <li>Diameter of larger pulley ($d_1$) = $450 \text{ mm} = 0.45 \text{ m}$ (Radius $r_1 = 0.225 \text{ m}$)</li>
+                <li>Diameter of smaller pulley ($d_2$) = $200 \text{ mm} = 0.2 \text{ m}$ (Radius $r_2 = 0.1 \text{ m}$)</li>
+                <li>Center distance ($x$) = $1.95 \text{ m}$</li>
+                <li>Speed of larger pulley ($N_1$) = $200 \text{ r.p.m.}$</li>
+                <li>Maximum tension ($T_1$) = $1 \text{ kN} = 1000 \text{ N}$</li>
+                <li>Coefficient of friction ($\mu$) = $0.25$</li>
+            </ul>
+
+            <p><strong>2. Geometry: Length and Angle of Contact</strong></p>
+            <p>For a <strong>crossed belt drive</strong>, the angle of contact ($\theta$) is the same for both pulleys.</p>
+
+            <p><strong>Step A: Calculate the Angle ($\alpha$)</strong></p>
+            <p>The angle $\alpha$ for a crossed belt is given by:</p>
+            $$\sin \alpha = \frac{r_1 + r_2}{x} = \frac{0.225 + 0.1}{1.95} = \frac{0.325}{1.95} = 0.1667$$
+            $$\alpha = \arcsin(0.1667) \approx 9.59^\circ$$
+
+            <p><strong>Step B: Angle of Contact ($\theta$)</strong></p>
+            <p>The angle of contact in radians is:</p>
+            $$\theta = (180 + 2\alpha) \times \frac{\pi}{180} = (180 + 19.18) \times \frac{\pi}{180} = 199.18^\circ \times \frac{\pi}{180}$$
+            $$\theta \approx \mathbf{3.476 \text{ rad}}$$
+
+            <p><strong>Step C: Length of Belt ($L$)</strong></p>
+            <p>The formula for the length of a crossed belt is:</p>
+            $$L = \pi(r_1 + r_2) + 2x + \frac{(r_1 + r_2)^2}{x}$$
+            $$L = \pi(0.225 + 0.1) + 2(1.95) + \frac{(0.225 + 0.1)^2}{1.95}$$
+            $$L = \pi(0.325) + 3.9 + \frac{0.1056}{1.95} = 1.021 + 3.9 + 0.054$$
+            $$L \approx \mathbf{4.975 \text{ m}}$$
+
+            <p><strong>3. Power Transmission</strong></p>
+
+            <p><strong>Step D: Velocity of the Belt ($v$)</strong></p>
+            $$v = \frac{\pi d_1 N_1}{60} = \frac{\pi \times 0.45 \times 200}{60} = \mathbf{4.712 \text{ m/s}}$$
+
+            <p><strong>Step E: Tension in Slack Side ($T_2$)</strong></p>
+            <p>Using the tension ratio formula $\frac{T_1}{T_2} = e^{\mu \theta}$:</p>
+            $$\frac{1000}{T_2} = e^{0.25 \times 3.476} = e^{0.869} \approx 2.384$$
+            $$T_2 = \frac{1000}{2.384} \approx \mathbf{419.46 \text{ N}}$$
+
+            <p><strong>Step F: Power Transmitted ($P$)</strong></p>
+            $$P = (T_1 - T_2) \times v$$
+            $$P = (1000 - 419.46) \times 4.712 = 580.54 \times 4.712$$
+            $$P \approx 2735.5 \text{ W} = \mathbf{2.736 \text{ kW}}$$
+
+            <p><strong>Summary of Results:</strong></p>
+            <table>
+                <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Length of Belt</strong></td><td>$4.975 \text{ m}$</td></tr>
+                    <tr><td><strong>Angle of Contact</strong></td><td>$199.18^\circ$ ($3.476 \text{ rad}$)</td></tr>
+                    <tr><td><strong>Power Transmitted</strong></td><td>$2.736 \text{ kW}$</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <h2 id="sec14-3">14.3 Speed Lost Due to Creep in Belt Drive</h2>
+    <div class="question-block">
+        <div class="question">Question: A belt is running over a driving pulley of 1 m diameter at 200 r.p.m. The driven pulley diameter is 2.25 m. If the stress on the tight side is 1.4 MPa and on the slack side is 0.5 MPa, find the speed lost by the driven pulley due to creep. Take Young&rsquo;s modulus for the belt material as 100 MPa.</div>
+        <div class="answer">
+            <p>To find the speed lost due to creep, we first calculate the theoretical speed of the driven pulley and then compare it to the actual speed when the elastic properties (Young&rsquo;s modulus) of the belt are considered.</p>
+
+            <p><strong>1. Given Data:</strong></p>
+            <ul>
+                <li>Driver pulley diameter ($d_1$) = $1 \text{ m}$</li>
+                <li>Driver speed ($N_1$) = $200 \text{ r.p.m.}$</li>
+                <li>Driven pulley diameter ($d_2$) = $2.25 \text{ m}$</li>
+                <li>Stress on tight side ($\sigma_1$) = $1.4 \text{ MPa} = 1.4 \times 10^6 \text{ N/m}^2$</li>
+                <li>Stress on slack side ($\sigma_2$) = $0.5 \text{ MPa} = 0.5 \times 10^6 \text{ N/m}^2$</li>
+                <li>Young&rsquo;s Modulus ($E$) = $100 \text{ MPa} = 100 \times 10^6 \text{ N/m}^2$</li>
+            </ul>
+
+            <p><strong>2. Step-by-Step Calculation:</strong></p>
+
+            <p><strong>Step A: Theoretical Speed of Driven Pulley ($N_2$)</strong></p>
+            <p>Ignoring creep and slip, the velocity ratio is:</p>
+            $$N_2 = N_1 \times \frac{d_1}{d_2} = 200 \times \frac{1}{2.25} = \mathbf{88.89 \text{ r.p.m.}}$$
+
+            <p><strong>Step B: Actual Speed Considering Creep ($N_2'$)</strong></p>
+            <p>The formula for the velocity ratio considering the effect of creep is:</p>
+            $$\frac{N_2'}{N_1} = \frac{d_1}{d_2} \times \left[ \frac{E + \sqrt{\sigma_2}}{E + \sqrt{\sigma_1}} \right]$$
+            <p>Substituting the values:</p>
+            $$N_2' = 200 \times \frac{1}{2.25} \times \left[ \frac{100 + \sqrt{0.5}}{100 + \sqrt{1.4}} \right]$$
+            $$N_2' = 88.89 \times \left[ \frac{100 + 0.7071}{100 + 1.1832} \right]$$
+            $$N_2' = 88.89 \times \left[ \frac{100.7071}{101.1832} \right] = 88.89 \times 0.9953$$
+            $$N_2' \approx \mathbf{88.47 \text{ r.p.m.}}$$
+
+            <p><strong>Step C: Speed Lost Due to Creep</strong></p>
+            $$\text{Speed Lost} = N_2 - N_2'$$
+            $$\text{Speed Lost} = 88.89 - 88.47 = \mathbf{0.42 \text{ r.p.m.}}$$
+
+            <p><strong>Final Results:</strong></p>
+            <table>
+                <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Theoretical Speed</strong></td><td>$88.89 \text{ r.p.m.}$</td></tr>
+                    <tr><td><strong>Actual Speed (with Creep)</strong></td><td>$88.47 \text{ r.p.m.}$</td></tr>
+                    <tr><td><strong>Speed Lost due to Creep</strong></td><td>$0.42 \text{ r.p.m.}$</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <h2 id="sec14-4">14.4 Spur Gear Horsepower Rating &mdash; Lewis Equation [2024 Exam]</h2>
+    <div class="question-block">
+        <div class="question">Question (2024 Exam 1.c): A stock spur gear is available having a diametral pitch of 12 teeth/in, a 2-in face, 18 teeth, and a pressure angle of 20&deg; with full-depth teeth. The material is AISI 1030 steel ($S_{ut} = 60$ kpsi, $S_y = 37$ kpsi) in as-rolled condition. Use a design factor of 3 to rate the horsepower output of the gear corresponding to a speed of 1400 rev/min and moderate applications. Assume $Y = 0.309$.</div>
+        <div class="answer">
+            <p>We use the <strong>Lewis Equation</strong> to find the allowable transmitted load ($W_t$) and then convert it to horsepower.</p>
+
+            <p><strong>1. Given Data:</strong></p>
+            <ul>
+                <li>Diametral Pitch ($P_d$) = $12 \text{ teeth/in}$</li>
+                <li>Face width ($b$) = $2 \text{ in}$</li>
+                <li>Number of teeth ($N$) = $18$</li>
+                <li>Pressure angle ($\phi$) = $20^\circ$</li>
+                <li>Yield Strength ($S_y$) = $37 \text{ kpsi} = 37{,}000 \text{ psi}$</li>
+                <li>Design Factor ($n$) = $3$</li>
+                <li>Lewis Form Factor ($Y$) = $0.309$</li>
+                <li>Speed ($n_p$) = $1400 \text{ rev/min}$</li>
+            </ul>
+
+            <p><strong>2. Step-by-Step Calculation:</strong></p>
+
+            <p><strong>Step A: Allowable Bending Stress ($\sigma_{all}$)</strong></p>
+            <p>Using the yield strength and design factor:</p>
+            $$\sigma_{all} = \frac{S_y}{n} = \frac{37{,}000}{3} = \mathbf{12{,}333.33 \text{ psi}}$$
+
+            <p><strong>Step B: Permissible Transmitted Load ($W_t$)</strong></p>
+            <p>Using the Lewis Equation: $W_t = \frac{\sigma_{all} \cdot b \cdot Y}{P_d}$</p>
+            $$W_t = \frac{12{,}333.33 \times 2 \times 0.309}{12} = \mathbf{635.17 \text{ lbf}}$$
+
+            <p><strong>Step C: Pitch Line Velocity ($V$)</strong></p>
+            <p>First, find the Pitch Circle Diameter ($D$): $D = N / P_d = 18 / 12 = 1.5 \text{ in}$</p>
+            $$V = \frac{\pi D n_p}{12} = \frac{\pi \times 1.5 \times 1400}{12} = \mathbf{549.78 \text{ ft/min}}$$
+
+            <p><strong>Step D: Horsepower Output ($hp$)</strong></p>
+            $$hp = \frac{W_t \times V}{33{,}000} = \frac{635.17 \times 549.78}{33{,}000} \approx \mathbf{10.58 \text{ hp}}$$
+
+            <p><strong>Final Result:</strong></p>
+            <table>
+                <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Allowable Stress</strong></td><td>$12{,}333.33 \text{ psi}$</td></tr>
+                    <tr><td><strong>Transmitted Load</strong></td><td>$635.17 \text{ lbf}$</td></tr>
+                    <tr><td><strong>Pitch Line Velocity</strong></td><td>$549.78 \text{ ft/min}$</td></tr>
+                    <tr><td><strong>Horsepower Output</strong></td><td>$\mathbf{10.58 \text{ hp}}$</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <h2 id="sec14-5">14.5 Involute Gear Contact Kinematics [2021 Exam]</h2>
+    <div class="question-block">
+        <div class="question">Question (2021 Exam 3.c): A pinion having 30 teeth drives a gear having 80 teeth. The profile of the gears is involute with 20&deg; pressure angle, 12 mm module and 10 mm addendum. Find the length of path of contact, arc of contact and the contact ratio.</div>
+        <div class="answer">
+            <p><strong>1. Given Data:</strong></p>
+            <ul>
+                <li>Pinion teeth ($T_p$) = $30$, Gear teeth ($T_g$) = $80$</li>
+                <li>Module ($m$) = $12 \text{ mm}$</li>
+                <li>Pressure angle ($\phi$) = $20^\circ$</li>
+                <li>Addendum ($a$) = $10 \text{ mm}$</li>
+            </ul>
+
+            <p><strong>2. Step-by-Step Calculation:</strong></p>
+
+            <p><strong>Step A: Pitch Radii and Addendum Radii</strong></p>
+            <ul>
+                <li>$R_p$ (Pinion) = $\frac{m \cdot T_p}{2} = \frac{12 \times 30}{2} = \mathbf{180 \text{ mm}}$</li>
+                <li>$R_g$ (Gear) = $\frac{m \cdot T_g}{2} = \frac{12 \times 80}{2} = \mathbf{480 \text{ mm}}$</li>
+                <li>$R_{ap}$ (Addendum Pinion) = $180 + 10 = \mathbf{190 \text{ mm}}$</li>
+                <li>$R_{ag}$ (Addendum Gear) = $480 + 10 = \mathbf{490 \text{ mm}}$</li>
+            </ul>
+
+            <p><strong>Step B: Path of Contact</strong></p>
+            <p><strong>1. Path of Approach ($KP$):</strong></p>
+            $$KP = \sqrt{R_{ag}^2 - (R_g \cos \phi)^2} - R_g \sin \phi$$
+            $$KP = \sqrt{490^2 - (480 \cos 20^\circ)^2} - 480 \sin 20^\circ = \sqrt{490^2 - 451.05^2} - 164.17 = \mathbf{27.35 \text{ mm}}$$
+
+            <p><strong>2. Path of Recess ($PL$):</strong></p>
+            $$PL = \sqrt{R_{ap}^2 - (R_p \cos \phi)^2} - R_p \sin \phi$$
+            $$PL = \sqrt{190^2 - (180 \cos 20^\circ)^2} - 180 \sin 20^\circ = \sqrt{190^2 - 169.14^2} - 61.56 = \mathbf{24.96 \text{ mm}}$$
+
+            <p><strong>3. Total Path of Contact:</strong></p>
+            $$\text{Path of Contact} = KP + PL = 27.35 + 24.96 = \mathbf{52.31 \text{ mm}}$$
+
+            <p><strong>Step C: Arc of Contact and Contact Ratio</strong></p>
+            <ul>
+                <li><strong>Arc of Contact</strong> = $\frac{\text{Path of Contact}}{\cos \phi} = \frac{52.31}{\cos 20^\circ} = \mathbf{55.67 \text{ mm}}$</li>
+                <li><strong>Circular Pitch ($p$)</strong> = $\pi \cdot m = \pi \times 12 = \mathbf{37.7 \text{ mm}}$</li>
+                <li><strong>Contact Ratio</strong> = $\frac{\text{Arc of Contact}}{p} = \frac{55.67}{37.7} = \mathbf{1.47}$</li>
+            </ul>
+
+            <p><strong>Final Results:</strong></p>
+            <table>
+                <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Path of Approach ($KP$)</strong></td><td>$27.35 \text{ mm}$</td></tr>
+                    <tr><td><strong>Path of Recess ($PL$)</strong></td><td>$24.96 \text{ mm}$</td></tr>
+                    <tr><td><strong>Total Path of Contact</strong></td><td>$52.31 \text{ mm}$</td></tr>
+                    <tr><td><strong>Arc of Contact</strong></td><td>$55.67 \text{ mm}$</td></tr>
+                    <tr><td><strong>Contact Ratio</strong></td><td>$\mathbf{1.47}$</td></tr>
+                </tbody>
+            </table>
+            <p><strong>Note:</strong> A contact ratio of $1.47$ (greater than $1$) means that at all times, at least one pair of teeth is in contact, ensuring continuous and smooth power transmission.</p>
+        </div>
+    </div>
+
+    <h2 id="sec14-6">14.6 Belt Drive with Thickness &amp; Slip [2021 Exam]</h2>
+    <div class="question-block">
+        <div class="question">Question (2021 Exam 2.b): An engine shaft running at 120 r.p.m. is required to drive a machine shaft by means of a belt. The pulley on the engine shaft is of 2 m diameter and that of the machine shaft is 1 m diameter. If the belt thickness is 5 mm; determine the speed of the machine shaft, when 1. There is no slip; and 2. There is a slip of 3%.</div>
+        <div class="answer">
+            <p><strong>1. Given Parameters:</strong></p>
+            <ul>
+                <li>Engine Shaft Speed ($N_1$) = $120 \text{ r.p.m.}$</li>
+                <li>Engine Pulley Diameter ($d_1$) = $2 \text{ m} = 2000 \text{ mm}$</li>
+                <li>Machine Pulley Diameter ($d_2$) = $1 \text{ m} = 1000 \text{ mm}$</li>
+                <li>Belt Thickness ($t$) = $5 \text{ mm}$</li>
+                <li>Total Slip ($s$) = $3\%$</li>
+            </ul>
+
+            <p><strong>2. Formulas Used:</strong></p>
+            <p>When belt thickness is given, the effective diameter of the pulleys increases by the thickness of the belt ($t$).</p>
+            <ul>
+                <li><strong>No Slip:</strong> $\frac{N_2}{N_1} = \frac{d_1 + t}{d_2 + t}$</li>
+                <li><strong>With Slip:</strong> $\frac{N_2}{N_1} = \frac{d_1 + t}{d_2 + t} \times \left(1 - \frac{s}{100}\right)$</li>
+            </ul>
+
+            <p><strong>3. Calculations:</strong></p>
+
+            <p><strong>Case 1: When there is no slip</strong></p>
+            $$N_2 = N_1 \times \left(\frac{d_1 + t}{d_2 + t}\right) = 120 \times \left(\frac{2000 + 5}{1000 + 5}\right)$$
+            $$N_2 = 120 \times \left(\frac{2005}{1005}\right) = 120 \times 1.99502$$
+            $$N_2 = \mathbf{239.4 \text{ r.p.m.}}$$
+
+            <p><strong>Case 2: When there is a slip of 3%</strong></p>
+            $$N_2 = 120 \times \left(\frac{2005}{1005}\right) \times \left(1 - \frac{3}{100}\right)$$
+            $$N_2 = 239.4 \times 0.97 = \mathbf{232.22 \text{ r.p.m.}}$$
+
+            <p><strong>Final Answers:</strong></p>
+            <table>
+                <thead><tr><th>Condition</th><th>Speed ($N_2$)</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>No Slip</strong></td><td>$239.4 \text{ r.p.m.}$</td></tr>
+                    <tr><td><strong>With 3% Slip</strong></td><td>$232.22 \text{ r.p.m.}$</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <h2 id="sec14-7">14.7 Compound Belt Drive &mdash; Dynamo Speed [2024 Exam]</h2>
+    <div class="question-block">
+        <div class="question">Question (2024 Exam 5.b): An engine, running at 150 rpm, drives a line shaft by means of a belt. The engine pulley is 750 mm diameter and the pulley on the line shaft being 450 mm. A 900 mm diameter pulley on the line shaft drives a 150 mm diameter pulley keyed to a dynamo shaft. Find the speed of the dynamo shaft, when i) there is no slip, and ii) there is a slip of 2% at each drive.</div>
+        <div class="answer">
+            <p>This is a <strong>compound belt drive</strong>. The total velocity ratio is the product of the individual drive ratios.</p>
+
+            <p><strong>1. Given Parameters:</strong></p>
+            <ul>
+                <li>Engine Speed ($N_1$) = $150 \text{ rpm}$</li>
+                <li>Driving Pulley 1 &mdash; Engine ($d_1$) = $750 \text{ mm}$</li>
+                <li>Driven Pulley 1 &mdash; Line Shaft ($d_2$) = $450 \text{ mm}$</li>
+                <li>Driving Pulley 2 &mdash; Line Shaft ($d_3$) = $900 \text{ mm}$</li>
+                <li>Driven Pulley 2 &mdash; Dynamo ($d_4$) = $150 \text{ mm}$</li>
+                <li>Slip at each drive ($s_1 = s_2$) = $2\%$</li>
+            </ul>
+
+            <p><strong>2. Formulas Used:</strong></p>
+            <ul>
+                <li><strong>No Slip:</strong> $\frac{N_4}{N_1} = \frac{d_1 \times d_3}{d_2 \times d_4}$</li>
+                <li><strong>With Slip:</strong> $\frac{N_4}{N_1} = \frac{d_1 \times d_3}{d_2 \times d_4} \times \left(1 - \frac{s_1}{100}\right) \times \left(1 - \frac{s_2}{100}\right)$</li>
+            </ul>
+
+            <p><strong>3. Calculations:</strong></p>
+
+            <p><strong>Case 1: When there is no slip</strong></p>
+            $$N_4 = N_1 \times \left(\frac{d_1 \times d_3}{d_2 \times d_4}\right) = 150 \times \left(\frac{750 \times 900}{450 \times 150}\right)$$
+            $$N_4 = 150 \times \left(\frac{675{,}000}{67{,}500}\right) = 150 \times 10 = \mathbf{1500 \text{ rpm}}$$
+
+            <p><strong>Case 2: When there is a slip of 2% at each drive</strong></p>
+            $$N_4 = 1500 \times (1 - 0.02) \times (1 - 0.02)$$
+            $$N_4 = 1500 \times 0.98 \times 0.98 = 1500 \times 0.9604$$
+            $$N_4 = \mathbf{1440.6 \text{ rpm}}$$
+            <p><em>(Note: If using the simplified textbook approximation of adding total slip $S = 2\% + 2\% = 4\%$, the result would be $1500 \times 0.96 = 1440 \text{ rpm}$.)</em></p>
+
+            <p><strong>Final Answers:</strong></p>
+            <table>
+                <thead><tr><th>Condition</th><th>Dynamo Speed ($N_4$)</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>No Slip</strong></td><td>$1500 \text{ rpm}$</td></tr>
+                    <tr><td><strong>With 2% Slip at Each Drive</strong></td><td>$1440.6 \text{ rpm}$</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <h2 id="sec14-8">14.8 Simple Band Brake &mdash; Flywheel Stopping [2021 Exam]</h2>
+    <div class="question-block">
+        <div class="question">Question (2021 Exam 5.c): The simple band brake is applied to a shaft carrying a flywheel of mass 400 kg. The radius of gyration of the flywheel is 450 mm and runs at 300 r.p.m. If the coefficient of friction is 0.2 and the brake drum diameter is 240 mm, find: I. the torque applied due to a hand load of 100 N, II. the number of turns of the wheel before it is brought to rest.</div>
+        <div class="answer">
+            <p><strong>1. Given Parameters:</strong></p>
+            <ul>
+                <li>Flywheel Mass ($m$) = $400 \text{ kg}$</li>
+                <li>Radius of Gyration ($k$) = $450 \text{ mm} = 0.45 \text{ m}$</li>
+                <li>Rotational Speed ($N$) = $300 \text{ r.p.m.}$ $\Rightarrow \omega = \frac{2\pi \times 300}{60} = 31.416 \text{ rad/s}$</li>
+                <li>Drum Diameter ($D$) = $240 \text{ mm}$ $\Rightarrow$ Radius ($r$) = $0.12 \text{ m}$</li>
+                <li>Coefficient of Friction ($\mu$) = $0.2$</li>
+                <li>Hand Load ($P$) = $100 \text{ N}$</li>
+                <li><em>Note: Angle of lap ($\theta$), Lever length ($L$), and band attachment distance ($b$) must be extracted from the exam figure.</em></li>
+            </ul>
+
+            <p><strong>2. Part I: Torque Applied (Framework)</strong></p>
+            <p>For a simple band brake, follow these steps once figure dimensions are known:</p>
+            <ol>
+                <li><strong>Find Tension Ratio:</strong> $\frac{T_1}{T_2} = e^{\mu \theta} = e^{0.2 \times \theta}$</li>
+                <li><strong>Find Slack Tension ($T_2$):</strong> In a standard simple band brake, the tight end is pinned to the fulcrum (zero moment), and the slack end is pulled by the lever:
+                    $$P \times L = T_2 \times b \Rightarrow T_2 = \frac{100 \times L}{b}$$
+                </li>
+                <li><strong>Calculate Torque ($T_B$):</strong> Find $T_1 = T_2 \times e^{\mu\theta}$, then:
+                    $$T_B = (T_1 - T_2) \times r = (T_1 - T_2) \times 0.12$$
+                </li>
+            </ol>
+
+            <p><strong>3. Part II: Number of Turns Before Rest</strong></p>
+            <p>This uses the <strong>Work-Energy Principle</strong>: the flywheel&rsquo;s kinetic energy must be entirely absorbed by the braking torque.</p>
+
+            <p><strong>Step A: Moment of Inertia ($I$):</strong></p>
+            $$I = m \times k^2 = 400 \times (0.45)^2 = \mathbf{81 \text{ kg&middot;m}^2}$$
+
+            <p><strong>Step B: Initial Kinetic Energy ($E_k$):</strong></p>
+            $$E_k = \frac{1}{2} I \omega^2 = 0.5 \times 81 \times (31.416)^2 = \mathbf{39{,}973.7 \text{ J}}$$
+
+            <p><strong>Step C: Number of Turns ($n$):</strong></p>
+            <p>Work done by brake = Torque $\times$ total angular distance ($2\pi n$):</p>
+            $$E_k = T_B \times 2\pi n$$
+            $$n = \frac{39{,}973.7}{2\pi \times T_B}$$
+            <p><em>(Plug the Torque ($T_B$) found in Part I to get the exact number of turns.)</em></p>
+
+            <p><strong>Summary of Known Values:</strong></p>
+            <table>
+                <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Moment of Inertia ($I$)</strong></td><td>$81 \text{ kg&middot;m}^2$</td></tr>
+                    <tr><td><strong>Angular Velocity ($\omega$)</strong></td><td>$31.416 \text{ rad/s}$</td></tr>
+                    <tr><td><strong>Kinetic Energy ($E_k$)</strong></td><td>$39{,}973.7 \text{ J}$</td></tr>
+                    <tr><td><strong>Number of Turns ($n$)</strong></td><td>$\frac{39{,}973.7}{2\pi \times T_B}$</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <h2 id="sec14-9">14.9 Differential Band Brake &mdash; Self-Locking [2022 Exam]</h2>
+    <div class="question-block">
+        <div class="question">Question (2022 Exam 5.c): A differential band brake has an angle of contact of 215&deg;. The band has wrapped on a brake drum of 300 mm diameter. The brake is designed to provide a torque of 450 N-m, the coefficient of friction between the band and the drum is 0.35. The lengths of OC and OD are 145 mm and 30 mm respectively. Perpendicular distance between the fulcrum and the line of action of the force F is 600 mm. Find: i) The necessary force (F) for anticlockwise and clockwise rotation; ii) The value of &lsquo;OC&rsquo; for self-locking when the drum rotates clockwise.</div>
+        <div class="answer">
+            <p><strong>Part A: Internal Expanding Brakes (Definition):</strong></p>
+            <p>An internal expanding brake is a friction brake mechanism where the brake shoes are located inside a rotating brake drum. When actuated, a cam or hydraulic piston pushes the shoes radially outward, expanding them to press against the inner surface of the drum to create friction and retard motion.</p>
+
+            <p><strong>Part B: Differential Band Brake Calculation</strong></p>
+
+            <p><strong>1. Given Parameters:</strong></p>
+            <ul>
+                <li>Angle of Contact ($\theta$) = $215^\circ = 215 \times \frac{\pi}{180} = 3.752 \text{ rad}$</li>
+                <li>Drum Diameter ($D$) = $300 \text{ mm}$ $\Rightarrow$ Radius ($r$) = $0.15 \text{ m}$</li>
+                <li>Braking Torque ($T_B$) = $450 \text{ N&middot;m}$</li>
+                <li>Coefficient of Friction ($\mu$) = $0.35$</li>
+                <li>Lever Arm OC = $145 \text{ mm} = 0.145 \text{ m}$</li>
+                <li>Lever Arm OD = $30 \text{ mm} = 0.030 \text{ m}$</li>
+                <li>Force Moment Arm ($L$) = $600 \text{ mm} = 0.6 \text{ m}$</li>
+            </ul>
+
+            <p><strong>2. Step A: Find Band Tensions ($T_1$ and $T_2$)</strong></p>
+            <p><strong>Tension Ratio:</strong></p>
+            $$\frac{T_1}{T_2} = e^{\mu\theta} = e^{0.35 \times 3.752} = e^{1.313} = \mathbf{3.717}$$
+            <p>Therefore, $T_1 = 3.717 \, T_2$</p>
+
+            <p><strong>Braking Torque Equation:</strong></p>
+            $$T_B = (T_1 - T_2) \times r \Rightarrow 450 = (T_1 - T_2) \times 0.15$$
+            $$T_1 - T_2 = \mathbf{3000 \text{ N}}$$
+
+            <p><strong>Solve for Tensions:</strong></p>
+            $$3.717 \, T_2 - T_2 = 3000 \Rightarrow 2.717 \, T_2 = 3000$$
+            $$\mathbf{T_2 = 1104.2 \text{ N}}$$
+            $$T_1 = 3000 + 1104.2 = \mathbf{4104.2 \text{ N}}$$
+
+            <p><strong>3. Step B: Actuating Force ($F$)</strong></p>
+            <p>In a differential band brake, both band ends create moments about the fulcrum O. Clockwise rotation makes OD the tight side ($T_1$) and OC the slack side ($T_2$).</p>
+
+            <p><strong>Case i: Clockwise Rotation</strong></p>
+            <p>Equilibrium: $F \times L = T_2 \times OC - T_1 \times OD$</p>
+            $$F \times 0.6 = (1104.2 \times 0.145) - (4104.2 \times 0.030)$$
+            $$F \times 0.6 = 160.11 - 123.13 = 36.98$$
+            $$F = \frac{36.98}{0.6} = \mathbf{61.6 \text{ N}}$$
+
+            <p><strong>Case ii: Anti-Clockwise Rotation</strong></p>
+            <p>Tensions swap ends. OC becomes tight side ($T_1$), OD becomes slack side ($T_2$).</p>
+            <p>Equilibrium: $F \times L = T_1 \times OC - T_2 \times OD$</p>
+            $$F \times 0.6 = (4104.2 \times 0.145) - (1104.2 \times 0.030)$$
+            $$F \times 0.6 = 595.11 - 33.13 = 561.98$$
+            $$F = \frac{561.98}{0.6} = \mathbf{936.6 \text{ N}}$$
+
+            <p><strong>4. Step C: Value of OC for Self-Locking (Clockwise)</strong></p>
+            <p>Self-locking occurs when the brake applies itself without any external force ($F \le 0$):</p>
+            $$T_2 \times OC \le T_1 \times OD$$
+            $$OC \le OD \times \frac{T_1}{T_2} = 30 \times 3.717$$
+            $$OC \le \mathbf{111.5 \text{ mm}}$$
+            <p>If OC is exactly $111.5 \text{ mm}$ or less, the brake will self-lock during clockwise rotation.</p>
+
+            <p><strong>Final Results:</strong></p>
+            <table>
+                <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>$T_1$ (Tight Side)</strong></td><td>$4104.2 \text{ N}$</td></tr>
+                    <tr><td><strong>$T_2$ (Slack Side)</strong></td><td>$1104.2 \text{ N}$</td></tr>
+                    <tr><td><strong>Force $F$ (Clockwise)</strong></td><td>$61.6 \text{ N}$</td></tr>
+                    <tr><td><strong>Force $F$ (Anti-Clockwise)</strong></td><td>$936.6 \text{ N}$</td></tr>
+                    <tr><td><strong>OC for Self-Locking</strong></td><td>$\le 111.5 \text{ mm}$</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <h2 id="sec14-10">14.10 Hollow Shaft Max Torque &mdash; Dual Constraint [2024 Exam]</h2>
+    <div class="question-block">
+        <div class="question">Question (2024 Exam 3.b): Determine the maximum torque that can be applied to a hollow circular steel shaft of 100-mm outside diameter and an 80-mm inside diameter without exceeding a shearing stress of 60 MPa or a twist of 0.5 deg/m. Use G = 83 GPa.</div>
+        <div class="answer">
+            <p><strong>The Blueprint:</strong> The shaft has <em>two</em> failure limits &mdash; it can break (exceeding shear stress) OR twist too much (exceeding rigidity). We calculate both torques and take the <strong>smaller</strong> one.</p>
+
+            <p><strong>1. Given Data &amp; Conversions:</strong></p>
+            <ul>
+                <li>Outer diameter ($d_o$) = $100 \text{ mm}$ (radius $r_o = 50 \text{ mm} = 0.05 \text{ m}$)</li>
+                <li>Inner diameter ($d_i$) = $80 \text{ mm}$</li>
+                <li>Max shear stress ($\tau$) = $60 \text{ MPa} = 60 \times 10^6 \text{ N/m}^2$</li>
+                <li>Max twist per meter ($\frac{\theta}{L}$) = $0.5^\circ\text{/m} = 0.5 \times \frac{\pi}{180} = 0.008727 \text{ rad/m}$</li>
+                <li>Shear modulus ($G$) = $83 \text{ GPa} = 83 \times 10^9 \text{ N/m}^2$</li>
+            </ul>
+
+            <p><strong>2. Polar Moment of Inertia ($J$):</strong></p>
+            $$J = \frac{\pi}{32}[(d_o)^4 - (d_i)^4] = \frac{\pi}{32}[(0.1)^4 - (0.08)^4]$$
+            $$J = \frac{\pi}{32}[0.0001 - 0.00004096] = \mathbf{5.796 \times 10^{-6} \text{ m}^4}$$
+
+            <p><strong>3. Test 1: Torque Limit from Strength (Shear Stress)</strong></p>
+            $$T_{\text{strength}} = \frac{\tau \times J}{r_o} = \frac{(60 \times 10^6) \times (5.796 \times 10^{-6})}{0.05} = \mathbf{6955 \text{ N&middot;m}}$$
+
+            <p><strong>4. Test 2: Torque Limit from Rigidity (Angle of Twist)</strong></p>
+            $$T_{\text{rigidity}} = \frac{\theta}{L} \times G \times J = 0.008727 \times (83 \times 10^9) \times (5.796 \times 10^{-6}) = \mathbf{4198 \text{ N&middot;m}}$$
+
+            <p><strong>5. The Verdict:</strong></p>
+            <p>If we apply $6955 \text{ N&middot;m}$, the shaft won&rsquo;t break, but it will twist past the $0.5^\circ\text{/m}$ limit. Therefore, <strong>rigidity is the controlling factor</strong>.</p>
+
+            <p><strong>Final Answer:</strong></p>
+            <table>
+                <thead><tr><th>Constraint</th><th>Max Torque</th><th>Controlling?</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Strength ($\tau \le 60$ MPa)</strong></td><td>$6955 \text{ N&middot;m}$</td><td>No</td></tr>
+                    <tr><td><strong>Rigidity ($\theta/L \le 0.5^\circ$/m)</strong></td><td>$4198 \text{ N&middot;m}$</td><td><strong>Yes &check;</strong></td></tr>
+                </tbody>
+            </table>
+            <p><strong>Maximum Torque = $\mathbf{4198 \text{ N&middot;m}}$ ($\approx 4.2 \text{ kN&middot;m}$)</strong></p>
+        </div>
+    </div>
+
+    <h2 id="sec14-11">14.11 Flexible Shaft with Distributed Friction [2022 Exam]</h2>
+    <div class="question-block">
+        <div class="question">Question (2022 Exam 4.b): A flexible shaft consists of a 0.20-in-diameter steel wire encased in a stationary tube that fits closely enough to impose a frictional torque of 0.50 lb&middot;in/in. Determine the maximum length of the shaft if the shearing stress is not to exceed 20 ksi. What will be the angular deformation of one end relative to the other end? Take G = 12 &times; 10&sup6; psi.</div>
+        <div class="answer">
+            <p><strong>The Blueprint:</strong> The torque isn&rsquo;t a single load at the end. Because the tube imposes friction along the entire wire, the torque <em>builds up linearly</em>. At the free end, torque is zero. At the driven end, torque is maximum.</p>
+
+            <p><strong>1. Given Data:</strong></p>
+            <ul>
+                <li>Diameter ($d$) = $0.20 \text{ in}$ (radius $c = 0.10 \text{ in}$)</li>
+                <li>Frictional torque ($t$) = $0.50 \text{ lb&middot;in/in}$</li>
+                <li>Max shear stress ($\tau$) = $20 \text{ ksi} = 20{,}000 \text{ psi}$</li>
+                <li>Shear modulus ($G$) = $12 \times 10^6 \text{ psi}$</li>
+            </ul>
+
+            <p><strong>2. Polar Moment of Inertia ($J$):</strong></p>
+            $$J = \frac{\pi}{32} \times d^4 = \frac{\pi}{32} \times (0.20)^4 = \mathbf{0.0001571 \text{ in}^4}$$
+
+            <p><strong>3. Maximum Allowed Torque ($T_{\max}$):</strong></p>
+            <p>Using the strength formula at the driven end where stress is highest:</p>
+            $$T_{\max} = \frac{\tau \times J}{c} = \frac{20{,}000 \times 0.0001571}{0.10} = \mathbf{31.42 \text{ lb&middot;in}}$$
+
+            <p><strong>4. Maximum Length ($L$):</strong></p>
+            <p>The total torque = friction per inch $\times$ length:</p>
+            $$T_{\max} = t \times L \Rightarrow 31.42 = 0.50 \times L$$
+            $$L = \frac{31.42}{0.50} = \mathbf{62.84 \text{ in}}$$
+
+            <p><strong>5. Angular Deformation ($\theta$):</strong></p>
+            <p>Since torque builds linearly from $0$ at the free end to $31.42$ at the driven end, the average torque is exactly half: $T_{\text{avg}} = \frac{T_{\max}}{2}$</p>
+            $$\theta = \frac{T_{\text{avg}} \times L}{G \times J} = \frac{(0.5 \times 31.42) \times 62.84}{(12 \times 10^6) \times 0.0001571}$$
+            $$\theta = \frac{15.71 \times 62.84}{1885.2} = \frac{987.2}{1885.2} = 0.5236 \text{ rad}$$
+            <p>Converting to degrees:</p>
+            $$\theta = 0.5236 \times \frac{180}{\pi} = \mathbf{30^\circ}$$
+
+            <p><strong>Final Results:</strong></p>
+            <table>
+                <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Maximum Length ($L$)</strong></td><td>$62.84 \text{ in}$</td></tr>
+                    <tr><td><strong>Angular Deformation ($\theta$)</strong></td><td>$0.5236 \text{ rad} = 30^\circ$</td></tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
